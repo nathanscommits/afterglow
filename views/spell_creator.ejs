@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/create_spell" method="post">
+        name: <input type="text" name="name" id="" required><br>
+        description: <input type="text" name="desc" id=""><br>
+        <br>
+        casting sound (uuid): <input type="text" name="cast_sound" id=""><br>
+        hit sound (uuid): <input type="text" name="hit_sound" id=""><br>
+        <br>
+        Casting animation: <input type="text" name="cast_animation" id=""><br>
+        Hit animation: <input type="text" name="hit_animation" id=""><br>
+       
+        <br>
+        type: <select name="type" id=""  value="attack">
+            <option value="attack">attack</option>
+            <option value="buff">buff</option>
+            <option value="other">other</option>
+        </select><br>
+        target: <select name="target" id=""  value="either">
+            <option value="either">either</option>
+            <option value="self">self</option>
+            <option value="non_self">non_self</option>
+        </select><br>
+        scope: <select name="scope" id=""  value="single">
+            <option value="single">single</option>
+            <option value="other">other</option>
+            <option value="aoe">aoe</option>
+        </select><br>
+        effect: <select name="effect" id=""  value="none">
+            <option value="none">none</option>
+            <option value="speed">speed</option>
+            <option value="slow">slow</option>
+            <option value="silence">silence</option>
+        </select><br>
+        <br>
+        damage: <input value="0" type="number" name="damage" id="" ><br>
+        cost: <input value="0" type="number" name="cost" id="" ><br>
+        crit: <input value="0" type="number" name="crit" id="" ><br>
+        duration: (time per timer) <input value="0" type="number" name="duration" id="" ><br>
+        ticks: (times that timer starts again for DOTS/HOTS) <input value="0" type="number" name="ticks" id="" ><br>
+        range: <input value="0" type="number" name="range" id="" ><br>
+        cooldown: <input value="0" type="number" name="cooldown" id="" ><br>
+        <br>
+        buff_power: <input value="0" type="number" name="buff_power" id="" ><br>
+        buff_crit: <input value="0" type="number" name="buff_crit" id="" ><br>
+        buff_range: <input value="0" type="number" name="buff_range" id="" ><br>
+        buff_duration: <input value="0" type="number" name="buff_duration" id="" ><br>
+        buff_cost: <input value="0" type="number" name="buff_cost" id="" ><br>
+        buff_cooldown: <input value="0" type="number" name="buff_cooldown" id="" ><br>
+        buff_ecto_max: <input value="0" type="number" name="buff_ecto_max" id="" ><br>
+        buff_ap_max: <input value="0" type="number" name="buff_ap_max" id="" ><br>
+        buff_impulse: <input value="0" type="number" name="buff_impulse" id="" ><br>
+        buff_resistance: <input value="0" type="number" name="buff_resistance" id="" ><br>
+        buff_reflected: <input value="0" type="number" name="buff_reflected" id="" ><br>
+
+<br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

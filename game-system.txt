@@ -1,0 +1,128 @@
+GAME SYSTEM
+3 player factions, phantom, demon, cryptids with their own reps
+The player chooses from three factions with their respective color/theming, reputation, surface base, quarter sim platform "dimension" with NPC leader. 
+Strong faction identities. The idea is to encourage both individual competition, as well as faction competition through XP and PVP leaderboards, which will be displayed on a blimp flying over the beach. 
+Winners will be determined on the 13th of every month, gaining a month long XP boost, altering the sim appearance and the course of story progression.
+
+There are four metrics: life (Ecto), currency (B$/BONE$), XP, and reputation.
+The player's life bar (Ectometer) naturally diminishes over 72 hours. (globally reduce everyones plasm)
+As it does, the player's appearance and shape becomes more ghastly and deformed, moving slower, and losing abilities/range of sight. 
+The player can replenish their Ectometer by consuming Plasm or a similar item in exchange for BONE$/B$. B$ and reputation can be earned by completing rotating daily quests. 
+The player will receive a small amount of B$ for remaining on sim. As the character progresses through reputation milestones, they may purchase powers and upgrades in exchange for B$.
+
+There are four NPC factions, but the player may only progress with two of them at a time. Increasing Department of Afterlife (Lawful) standing will decrease your standing with The Mob (Unlawful,) and vice-versa. 
+The player may progress with The Locals (Good) regardless, until a milestone where the player may side with The Cult (Evil) and converting all rep with The Locals.
+
+For a larger health boost and temporary XP buff, the player can run a haunt from the Plasm bottling factory, where they terrorize NPC's in one of four randomized skyboxes - the same house in different eras of time, posing different challenges, 
+but utilizing the same AI pathing. Short, sweet, satisfying, with a destructible environment.
+
+Combat is turn based. At random intervals, a tentacle will emerge through a staticy crack in reality and attack the player unless they are in a home or safe area.
+Frequency of attacks would depend on the area. 
+
+If the player is defeated, they must complete a maze to reach the light at the end of the tunnel. 
+They begin an angelic ascent, before REJECTED flashes across the screen with a harsh buzzer, plunging them down an animated tunnel and returning them to the game, 
+losing Ecto and XP. Premium consumable items can grant temporary immunity from these random attacks.
+
+The only sanctioned PVP takes place at the Afterglow Docks, where the DOA turns a blind-eye to the Mob's fight club. All NPC's are 'killable' before respawning. 
+though unsanctioned violence will be responded to by Hatmen NPCs, the beat cops of the world.
+
+New powers can be crafted from recipes. Recipes can be unlocked and purchased through both Faction Rep and NPC Rep vendors in exchange for B$. 
+A limited, rotating inventory of crafting materials will be available for purchase through various vendors, as well as looting them.
+
+Completeing milestones will give you access to  a weekly bonus round, where the player will be teleported to a skybox where they will break presents amid obstacles under a time limit. 
+Here, they can win crafting materials, junk, or even rare power recipes.
+
+I was also toying around with continuing the game off-sim like Bloodlines, without being as annoying as Bloodlines, which I have not figured out.
+
+
+
+Website pages:
+profile pages, inventory lists, journaling stuff, mission documents
+leaderboards, player guide, social links, general stats
+
+DOA site specific: Report crimes, Incident reports (OOC stuff), clear your name, frame someone, change name (if no current bounties)
+
+Mob site: hire hitmen, get hit contracts, robbery, extortion, bribes
+
+cult site: rituals, hexs, global buffs
+
+locals site: paycheck, health insurance, open businesses, buy real estate, race change (if no bounties)
+
+
+HUD contains:
+Text of the area you are currectly at
+ecto/pk levels
+
+
+Donate bones for a chance to get something (gacha style)
+
+
+player interactions:
+Trading
+banking
+looting
+interacting with items (DOA records, puzzles etc)
+targeting (NPC or player)
+
+
+PRIORITYS: 
+[18:10] Lux Tesla (lxpunk): player/race creation, basic quest/reward systems
+[18:11] Lux Tesla (lxpunk): then combat
+[18:11] Lux Tesla (lxpunk): and crafting
+[18:11] Lux Tesla (lxpunk): haunts would be last
+
+
+PLAYER CREATION:
+1) kharon messages you to fill out your paperwork, links you to the website where you:
+2) Choose race, write in cause of death, pick a name, date of death, hit submit
+3) leave the interview room and start the tutorial quest
+
+QUEST TASKS:
+go to waypoint
+destroy target
+collect # of items
+speak a phrase
+
+
+STREET MAP
+PHONE BOOK
+NEWSPAPER
+
+
+Drop your bones when you die, can be looted by first person to interact with it (including you)
+
+
+GPS system: 
+tracks what district you are in
+
+
+INVENTORY ITEMS:
+Potions
+bones (main currency, doesnt take up an inventory slot)
+Inventory Expansion, Bank Expansion
+Quest items (no purpose outside of the quest, no value)
+crafting materials (crafting spells requires different ammounts of multiple materials)
+
+SPELL BAG: (only accessable from race spell changing areas)
+spell blueprints
+crafted spells
+
+POTIONS:
+Plasm Classic for the baseline, 
+Plasm Pulse (Blood Orange)
+Plasm Dash - w/energy,
+Plasm Twist - limey goodness,
+Plasm Phantasmo - extra flavor, 
+Plasm Spritzer - super fizzy,
+Plasm Halcyon - calming w/tea extract
+Plasm Bang - exxxtra sour
+Plasm Vital - added vitamins,
+Plasm Haze - Milkmix
+Plasm Spasm - Let loose
+Plasm Murky Mulberry
+Gasm
+SHARD
+
+BANKS/ATMS/SPELL SHRINES/NPCs/Trading with players
+
+spells are either self cast/non self cast or either

@@ -1,0 +1,34 @@
+{
+  "name": "afterglow",
+  "version": "1.0.0",
+  "description": "webhook for databasing and other external processing",
+  "main": "db.js",
+  "scripts": {
+    "start": "nodemon db --watch",
+    "live": "lt --subdomain afterglow --port 3000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathanscommits/afterglow.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathanscommits/afterglow/issues"
+  },
+  "homepage": "https://github.com/nathanscommits/afterglow#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.3.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "mongodb": "^4.1.3",
+    "nodemon": "^2.0.13",
+    "phin": "^3.6.0",
+    "socket.io": "^4.3.1",
+    "ssl-express-www": "^3.0.8"
+  }
+}

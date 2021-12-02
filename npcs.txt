@@ -1,0 +1,58 @@
+Things an NPC has to do:
+
+Converse:
+Basic dialog greeting/responses, directions, help text, remembering who they have met before, treating players differently based on rep
+substrings:
+missions: list available, y/n to accept them
+info: help info
+random banter: react to insults, basic questions
+secret phrases: unlock dialog using certain phrases learned through other things on sim
+
+Sell:
+Faction store items and any other items we need them to. prices vary based on rep and so does what is available to buy
+
+Missions:
+Offering missions to players if they meet the criteria, playing rolls in missions (players might need to talk to them for a mission task), 
+mission completions (rewarding players if talking to them was the last mission task)
+
+Combat:
+Able to defend themselves if attacked, might attack a player unprovoked if their rep is bad enough.
+Depending on the NPC attacked, certain backup NPCs could be called in to assit in combat, and a bounty could be put on the attacking player
+On death they could drop loot. They respawn shortly after death
+
+
+NPCs:
+
+DOA
+    faction leader: Kharon (Phantom)
+    hatmen
+MOB
+    faction leader: Boss Brutto (Demon)
+    grunts
+Locals
+    faction leader: Ol Mayor Jerry (Phantom)
+    pitchforker
+    shop owners
+    local traffic**
+Cult
+    Faction leader: Bob (Phantom)
+    cultist grunts
+    random encounter tentacles**
+
+Phantoms
+    Faction leader: Baron Samedi
+    mirror lady
+demons
+    Faction leader: Lillith
+Cryptids
+    Faction leader: Whiskey Jack
+    Bar drunks
+
+[19:12] Lux Tesla (lxpunk): so in order to join the demons, you have to sell your soul, to become a cryptid, you rejoin with the primordial force
+[19:12] Lux Tesla (lxpunk): phantoms, you're almost just staying on course
+
+TYPES:
+faction leaders: They do it all
+hunters: Full combat AI, searching for players holding bounties using vision cones, able to do some very limited conversation
+shopkeepers: Full shop utility, full conversation AI, full mission AI, limited combat ai (only need to take damage and die/respawn/drop loot)
+hazards: deals damage on collision

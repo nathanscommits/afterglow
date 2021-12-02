@@ -1,0 +1,152 @@
+/*
+Qualities of a spell
+AOE/single target
+stationary/moving
+
+
+CATAGORIES
+ecto effecting
+    *Deal damage (direct/DOT)
+    *heal target (direct/hot)
+    *hurt self
+    *execute
+resource effecting
+    *gain resrouce
+    *drain resuorce
+buffs/debuffs
+    buff/debuff stats (power, crit, range, duration, cooldown, cost, max-health, max-spender)
+    remove buff/debuff
+    alter max health/resource
+    *reduce damage
+    *reflect damage
+    *split damage
+    *untargetable
+    first blood
+    silence
+    cheat death
+    taunt
+    passifist
+movement
+    immobalization
+    teleport
+    group summon
+    slow/speed
+    pull/push targets
+    switch controlls
+    levitate
+    fly
+misc
+    race detection
+    rez item
+    loot reroll
+    reveal info
+    conceal info
+    show direction to closest resource/faction target/NPC
+    steal items
+    trick trader
+    drain bones
+
+*/
+
+Flight - Event - Able to fly for X seconds (speed scales off of spell power)
+forced exchange: exchange health % with target
+Afkiller: use NPC combat logic while you're afk
+Take damage based on how laggy you are to render
+
+Blinds using camera controls
+
+convert 50 max health to +50 max resource
+convert 50 max resource to +50 max health
+
+MOUNTS!
+
+DEMONS
+demons passives: siphon the blood of your victims to fill your blood meter and gain access to stronger spells
+Fireball  - Ranged single target damage
+Stalk  - Become Invisible for X seconds, interacting with anything or casting will break this spell.
+enraged: increase crit but also increases cooldown
+Bleed: DOT effect
+Bloodletting: sacrifice ecto in exchange for resource
+Blood Alter: Impale target on an alter of talons and siphon their blood
+Dream mirror: Rip the life force from your target and use it as a meat shield
+throat grab: damage and silence target
+Fear: drain a targets resource, the closer the target the faster the drain
+
+CRYPTIDS
+cryptids passives: stamina refills faster while stationary, you are harder to hit and deal more damage while moving
+Swipe - damages everything within X meters of user
+Thorns- Reflect X% of all damage dealt to you for X seconds
+death wish: damage bonus = to missing health %
+execute: instantly kills a target under X% health
+first blood: deals heavy damage to targets with full health
+Beserk: Increases damage but can only cast damage spells for X seconds
+swarm: command minions to swarm an area
+eat corpse: eat a dead target to refill some ecto
+haste: increase your movment speed by X%
+dodge: increase your chance to dodge an attack by X%
+transform: Show your true form, increasing in size and power for X seconds
+
+PHANTOMS
+Phantoms passive: cheat death: instead of dieing, recover X% of your ecto and briefly stun your attacker, usable once ever X hours
+Haunt - Causes minor damage to a single target every X seconds for X seconds
+Phase - Become invulnerable to attacks for X seconds, cannot move or cast during this time.
+SLIME: slime puddle the ground, standing in it refills your PK faster and damages non Phantom targets
+black hole: summon a black hole that pulls in targets around it
+telekenesis: push targets back with force
+banshee: silence target from casting for X seconds
+cold snap: slow target movement speed by X%\
+Mirrors: clones of yourself spawn around you to confuse your targets and protect you
+Levitate: Levitate your target helplessly in the air and damage them over time
+Confuse: Switch your targets movment controlls around randomly
+Reflect Pain: Form a psychic bond and deflect incoming damage back at your target.
+phantom limb: a ghostly appendage takes grasp of your target, silencing them for X seconds
+desecrate: cast on dead body to have a second chance at loot
+
+MOB:
+Subdue - Causes target to be unable to cast spells for X seconds
+Mock - Cause target to only target you for X seconds, reduces damage taken by X% while this spell is in effect
+bone shield: reduce damage at the cost of bones
+Skills that cause a wanted level:
+pick picket: chance to steal X% of your targets held bones. Dont screw up!
+Trick trader: undercut a trade by X% without the trade partner noticing
+in the family: call in a grunt to asssist you in combat
+concealed weapon: Mob - do X% more damage for the duration
+my little friend - summon a ghost tommy gun turret
+
+DOA:
+passives: police radio, 
+Opression - Causes minor damage, reduces targets AP by damage%
+FREEZE! - causes target to be immobolized for X seconds, and unable to cast spells
+Catch a Ride: A hatman swoops in to transport you to a number of marked locations on sim
+Backup!: call in a hatman to assist you in combat
+riot shield: DOA - take X% less damage for the duration
+Reveal Info: Reveals targets name and level
+Imprison: conjure a dome X meters in radius for X seconds
+
+LOCALS;
+passives: daily paycheck, health insurance
+passifist: resist X% of all damage when no direct attack spells are slotted (or alternatively, resist damage when you havnt attacked for X amount of time)
+Bless - Local - Increase targets stats for X seconds
+Teleport - Local - Create a dimensional door for X seconds that transports all who pass through it to a chosen location within X meters, causing X damage
+dispell: Removes all debuffs/buffs
+locate resource: shows you the direction to the closest hidden item on the sim
+shared suffering: all damage is split between you and your target for the duration
+
+CULT:
+passives: perform rituals, hexes, create global buffs
+Ecto Siphon  - Causes minor damage, restores damage% ecto
+Curse - Lowers targets stats for X seconds
+void hole - summon a portal to the void where tentacles lash out and deal damage
+summmon: if 4+ cultists cast this close to eachother within Xseconds, summon an elder beast
+they just keep coming: summon a cultist member to assit you in battle
+Conceal info: protect target against reveal spell and GPS tracking
+Calm: calm NPC aggro
+
+spell fusing, mix 2 spells together
+store spells in the spell inventory, can change spells out at faction alters
+
+things we need to find out to cast a spell:
+whos selected target
+distance to target
+stats of caster
+stats of spell
