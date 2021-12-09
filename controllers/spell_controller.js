@@ -24,14 +24,14 @@ exports.apUpdate = async (req, res) => {
     update(req, caster)
     console.log(req.body)
     // res.send({display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max, caster.bone]});
-    res.status(200);
+    res.status(200).send('updated');
 }
 exports.targetUpdate = async (req, res) => {
     await USERS.updateOne({uuid: req.body.uuid}, {$set: {target: req.body.target_name}}, {upsert: true})
     let caster = await USERS.findOne({uuid: req.body.uuid})
     update(req, caster)
     console.log(req.body)
-    res.status(200);
+    res.status(200).send('updated');
 }
 
 
