@@ -175,8 +175,8 @@
             <div class="text-info"><span>Pandora's Toy Box, AFTERGLOW</span>  <span id="target" style="float: right;">Targeting: <%= user.target %></span></div>
             <div class="second-container">
                 <div class="left-align2">
-                    <div class="ecto-bar" id="ecto-bar" style="width: <%= user.ecto %>%;">ECTO <%= user.ecto %>/<%= user.ecto_max %></div>
-                    <div class="pk-bar" id="pk-bar" style="width: <%= user.ap %>%;">PK <%= user.ap %>/<%= user.ap_max %></div>
+                    <div class="ecto-bar" id="ecto-bar" style="width: <%= (user.ecto/user.ecto_max * 100) %>%;"><span id="ecto-bar-span" style="position: absolute;">ECTO <%= user.ecto %>/<%= user.ecto_max %></span></div>
+                    <div class="pk-bar" id="pk-bar" style="width: <%= (user.ap/user.ap_max * 100) %>%;"><span id="pk-bar-span" style="position: absolute;">PK <%= user.ap %>/<%= user.ap_max %></span></div>
                 </div>
                 <div class="right-align2">
                     <div class="bones-balance" id="bones-balance">₿$ <%= user.bone %></div>

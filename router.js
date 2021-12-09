@@ -37,6 +37,7 @@ router.post("/addinventory", inventoryController.addInventory)
 router.post("/removeinventory", inventoryController.removeInventory)
 router.post("/getInventory", inventoryController.getInventory)
 router.post("/ap_update", spellController.apUpdate)
+router.post("/target_update", spellController.targetUpdate)
 
 router.get("/ui", (req, res) => res.render('ui'))
 

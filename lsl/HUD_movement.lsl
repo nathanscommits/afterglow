@@ -71,7 +71,7 @@ default{
     {
         if(n == 6 && id == "IMPULSE"){
             IMPULSE = (float)m;
-            llOwnerSay("Impulse updated to " + m);
+            // llOwnerSay("Impulse updated to " + m);
             if(IMPULSE == 1 && !CONTROL){
                 CONTROL = TRUE;
                 llOwnerSay((string)CONTROL);

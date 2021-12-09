@@ -54,16 +54,16 @@ animate(string animation) {
         }
     }
     
-    llOwnerSay("Animating: "+animation);
+    // llOwnerSay("Animating: "+animation);
 }
 teleport(vector coord, vector lookat) {
     //teleport!
-    llOwnerSay("teleporting: "+(string)coord);
+    // llOwnerSay("teleporting: "+(string)coord);
     llTeleportAgent(llGetOwner(), "", coord, lookat);
 }
 attach_object(string item) {
     //attach!
-    llOwnerSay("attaching: "+item);
+    // llOwnerSay("attaching: "+item);
     //rez object that auto attaches
 }
 cam(list params) {
@@ -73,7 +73,7 @@ cam(list params) {
         llClearCameraParams();
         llSetCameraParams(params);
     }
-    llOwnerSay("Camming: "+llDumpList2String(params, ",\n"));
+    // llOwnerSay("Camming: "+llDumpList2String(params, ",\n"));
 }
 
 integer TARGET_CH = -8143425; integer COOLDOWN_BOOL; key TARGET; integer REZ_CHANNEL = -9247974;
@@ -184,6 +184,11 @@ default{
         } else if(c == TARGET_CH) {
             TARGET = llGetOwnerKey(id);
             llOwnerSay("Targeting " + llKey2Name(llGetOwnerKey(id)));
+             post("/target_update", llList2Json(JSON_OBJECT, [
+                "target", (string)TARGET,
+                "target_name", llKey2Name(TARGET),
+                "uuid", llGetOwner()
+            ]));
         }
         //if on cooldown, return
     }
@@ -208,6 +213,11 @@ default{
         if(llDetectedKey(0) != llGetOwner()) llRegionSayTo(llDetectedKey(0), TARGET_CH, "TARGET");
         else {
             TARGET = llGetOwner();
+            post("/target_update", llList2Json(JSON_OBJECT, [
+                "target", (string)TARGET,
+                "target_name", llKey2Name(TARGET),
+                "uuid", llGetOwner()
+            ]));
             llOwnerSay("Targeting yourself");
         }
     }
@@ -265,11 +275,12 @@ default{
         if(n == 4 && id == "ap_update") {
             if((float)m == AP) return;
             AP = (float)m;
-            PK = (string)((integer)AP);
+            // PK = (string)((integer)AP);
             // llRegionSay(HUD_COMS, "/spellbar/"+ECTO+"/"+ECTO_MAX+"/"+PK+"/"+PK_MAX+"/"+llKey2Name(TARGET)+"/"+BONE+"/");
             post("/ap_update", llList2Json(JSON_OBJECT, [
                 "ap", (string)AP,
-                "target", (string)TARGET,
+                // "target", (string)TARGET,
+                // "target_name", llKey2Name(TARGET),
                 "uuid", llGetOwner()
             ]));
         }
