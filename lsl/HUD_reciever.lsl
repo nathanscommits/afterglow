@@ -1,8 +1,8 @@
 key urlRequestId;
 string url;
 key HTTP_REQUEST_ID;
-// string URL = "https://afterglow.loca.lt";
-string URL = "https://afterglow2.loca.lt";
+string URL = "https://afterglow.loca.lt";
+// string URL = "https://afterglow2.loca.lt";
 float VERSION = 0.1;
 
 post(string url, string json){
@@ -78,8 +78,9 @@ cam(list params) {
 integer TARGET_CH = -8143425; integer COOLDOWN_BOOL; key TARGET; integer REZ_CHANNEL = -9247974;
 list COLLISION_OBJECTS; list SENSOR_OBJECTS; string STATS; float AP = 100;
 vector LKL; 
-
+integer HUD_COMS = -235242;
 PARSE_HTTP(string body) {
+    llRegionSay(HUD_COMS, body);
     if(llJsonGetValue(body, ["display"]) != JSON_INVALID) {
         STATS = llJsonGetValue(body, ["display"]);
         llMessageLinked(LINK_THIS, 2, llJsonGetValue(body, ["display"]), "display");
@@ -245,7 +246,12 @@ default{
     link_message( integer s, integer n, string m, key id )
     {
         if(n == 4 && id == "ap_update") {
+            if((float)m == AP) return;
             AP = (float)m;
+            post("/ap_update", llList2Json(JSON_OBJECT, [
+                "ap", (string)AP,
+                "uuid", llGetOwner()
+            ]));
         }
     }
 

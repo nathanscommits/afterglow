@@ -7,7 +7,16 @@ const postController = require("./post_controller");
     // stationary/moving
     // target, power, crit, range, duration, cost, cooldown, effect
 
-
+exports.apUpdate = async (req, res) => {
+    await USERS.updateOne({uuid: req.body.uuid}, {$set: {ap: parseInt(req.body.ap)}}, {upsert: true})
+    let caster = await USERS.findOne({uuid: req.body.uuid})
+    console.log(req.body)
+    res.send({display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max]});
+}
+exports.spellBar = async (req, res) => {
+    const user = await USERS.findOne({slname: 'Sharky Piggins'})
+    res.render('spell-bar', {user: user, cooldown: req.params.cooldown})
+}
   
 exports.castSpell = async (req, res) => {
 try{
@@ -129,6 +138,8 @@ let preSpell = async (caster, target, spell_data) =>{
     //damage caster = reflected-damage
     let reflected_damage = (spell_data.damage *= target.stat_buffs.reflected);
     if(reflected_damage != NaN) caster.ecto -= reflected_damage;
+    if(caster.ecto < 0) caster.ecto = 0;
+    else if(caster.ecto > caster.ecto_max) caster.ecto = caster.ecto_max
     //check for split damage partner here somewhere!?
     ///////////////////////////////////////////////////////////////
     
@@ -139,6 +150,8 @@ let postSpell = async (caster, target, spell_data) => {
     
     
     if(spell_data.damage != NaN) target.ecto -= spell_data.damage;
+    if(target.ecto < 0) target.ecto = 0;
+    else if(target.ecto > target.ecto_max) target.ecto = target.ecto_max
     caster.ap -= spell_data.cost;
     
     await USERS.updateOne({uuid: caster.uuid}, {$set: {ap: caster.ap, ecto: caster.ecto}}, { upsert: true })
@@ -176,6 +189,8 @@ let postSpell = async (caster, target, spell_data) => {
         //remove buff effects
 
         if(spell_data.damage != NaN) target.ecto -= spell_data.damage;
+        if(target.ecto < 0) target.ecto = 0;
+        else if(target.ecto > target.ecto_max) target.ecto = target.ecto_max
         
         
         await USERS.updateOne({uuid: target.uuid}, {$set: {ecto: target.ecto, ap: target.ap, effects: target.effects, stat_buffs: target.stat_buffs, ecto_max: target.ecto_max, ap_max: target.ap_max}}, { upsert: true });

@@ -1,0 +1,15 @@
+TABS on booklet/folder UI
+: sim news/leaderboards/newspaper
+: profile/journal/inventory/player statistics
+: combat/spells
+: missions info/public directory/map
+: help/guides
+
+Skill bar
+: 5 spell slots (4 spells 1 potion) with cooldown info
+: ecto/pk bars
+: target info
+: bones balance
+//update when values change
+//values to track are
+// ecto, pk, bones, location, target, cooldowns, spell loadout, equipped potion

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        body, html{
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            /* overflow-x: hidden; */
+            font-size: 2vw;
+            font-weight: bold;
+        }
+        .container{
+            margin-top: 4vw;
+            width: 100vw;
+            height: 100%;
+        }
+        .left-align{
+            float: left;
+            height: 100%;
+            width: 25vw;
+            margin-left: 3vw;
+            /* border: red solid 1px; */
+        }
+        .right-align{
+            /* border: blue solid 1px; */
+            float: right;
+            margin-right: 2vw;
+            height: 100%;
+            width: 69vw;
+        }
+        .circle-container{
+            display: block;
+            margin: auto;
+            width: 20vw;
+            height: 20vw;
+            transform: rotate(-45deg);
+            background-color: rgb(0, 0, 0);
+            border-radius: 100vw;
+            position: relative;
+        }
+        .upper-circle{
+            /* border: 1px solid black; */
+            border-radius: 100vw 100vw 0   0  ;
+            height: 50%;
+            width: 100%;
+        }
+        .lower-circle{
+            /* border: 1px solid black; */
+            border-top: none;
+            height: 50%;
+            width: 100%;
+            border-radius: 0  0 100vw 100vw;
+        }
+        .inner-circle-bottom{
+            position: absolute;
+            left:2.3vw;
+            display: block;
+            width: 78%;
+            height: 35%;
+            margin: auto;
+            margin-top: 5%;
+            background-color: white;
+            border-radius: 0  0 100vw 100vw;
+        }
+        .inner-circle-top{
+            position: absolute;
+            top: 2.2vw;
+            left:2.3vw;
+            display: block;
+            width: 78%;
+            height: 35%;
+            margin: auto;
+            margin-bottom: 5%;
+            background-color: white;
+            border-radius: 100vw 100vw 0  0 ;
+        }
+        .text-info{
+            text-align: justify;
+            font-size: 1.5vw;
+            margin-bottom: 0.5vw;
+            width: 70%;
+        }
+        .second-container{
+            width: 100%;
+            height: 6vw;
+            /* border: aqua 1px solid; */
+        }
+        .left-align2{
+            float: left;
+            /* border: black solid  1px; */
+            height: 100%;
+            width: 70%;
+        }
+        .right-align2 {
+            float: right;
+            /* border: black solid  1px; */
+            height: 100%;
+            width: 29%;
+        }
+        .ecto-bar{
+            display: block;
+            margin-top: 0.7%;
+            height: 40%;
+            background-color: red;
+            width: 100%;
+            border-radius: 0.5vw;
+        }
+        .pk-bar{
+            display: block;
+            margin-top: 1%;
+            height: 40%;
+            background-color: purple;
+            width: 100%;
+            border-radius: 0.5vw;
+        }
+        .bones-balance{
+            display: block;
+            margin:auto;
+            margin-top: 1.7vw;
+            font-size: 2vw;
+            /* border: blueviolet 1px solid; */
+        }
+        .spell-container{
+            /* border: 1px solid pink; */
+            height: 11.4vw;
+            width: 100%;
+            display: flex;
+        }
+        .spell{
+            background-color: rgb(131, 131, 131);
+            width: 10vw;
+            height: 10vw;
+            margin: 2.6vw;
+            margin-top: 1vw;
+            margin-left: 0;
+            border-radius: 1vw;
+        }
+        .spell img{
+            border-radius: 1vw;
+            width: 100%;
+            height: 100%;
+        }
+        .cooldown{
+            position: absolute;
+            color: white;
+            font-size: 8vw;
+            margin-left: -0.2vw;
+            text-align: center;
+            width: 10vw;
+        }
+    </style>
+    <!-- <img style="height: 100vh; width: 100vw;" src="https://i.gyazo.com/aef66d33d9a20943e1bb4b1409a8e448.png" alt=""> -->
+    <div class="container">
+        <div class="left-align">
+            <div class="circle-container">
+                <div class="upper-circle">
+                    <div class="inner-circle-top"></div>
+                </div>
+                <div class="lower-circle">
+                    <div class="inner-circle-bottom"></div>
+                </div>
+            </div>
+        </div>
+        <div class="right-align">
+            <div class="text-info"><span>Pandora's Toy Box, AFTERGLOW</span>  <span style="float: right;">Targeting: <%= user.slname %></span></div>
+            <div class="second-container">
+                <div class="left-align2">
+                    <div class="ecto-bar" style="width: <%= user.ecto %>%;">ECTO <%= user.ecto %>/<%= user.ecto_max %></div>
+                    <div class="pk-bar" style="width: <%= user.ap %>%;">PK <%= user.ap %>/<%= user.ap_max %></div>
+                </div>
+                <div class="right-align2">
+                    <div class="bones-balance">₿$ <%= user.bone %></div>
+                </div>
+            </div>
+            <div class="spell-container">
+                <% if(parseInt(cooldown) <= 0){  cooldown = ''; } %>
+                <div class="spell" id="spell-1"><span class="cooldown"><%= cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918169498450796544/Brain_Fog_sm.png" alt=""></div>
+                <div class="spell" id="spell-2"><span class="cooldown"><%= cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918162174290051083/Degauss_sm.png" alt=""></div>
+                <div class="spell" id="spell-3"><span class="cooldown"><%= cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918157604151255110/Cold_Spot_sm.png" alt=""></div>
+                <div class="spell" id="spell-4"><span class="cooldown"><%= cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918147448256466974/Shattered_Mirror_sm.png" alt=""></div>
+                <div class="spell" id="spell-5"></div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>

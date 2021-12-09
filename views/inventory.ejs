@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<style>
+  /* @import url('https://fonts.googleapis.com/css?family=Dancing+Script'); */
+  @import url('https://fonts.googleapis.com/css2?family=Comforter&display=swap');
+body, html {
+    margin: 0;
+    padding: 0;
+   
+}
+div.game {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  /* height: 50vh; */
+  grid-template-columns: repeat(4, 1fr);
+  /* border: 0.2vw solid rgba(93, 69, 34, 0) ; */
+  padding: 0.4vw;
+  border-radius: 0px;
+  /* grid-template-rows: repeat(5, 1fr); */
+  /* width: 120px;
+  height: 120px */
+  box-shadow:
+  2.8px 2.8px 2.2px rgba(0, 0, 0, 0.07),
+  6.7px 6.7px 5.3px rgba(0, 0, 0, 0.05),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.042),
+  22.3px 22.3px 17.9px rgba(0, 0, 0, 0.035),
+  41.8px 41.8px 33.4px rgba(0, 0, 0, 0.028),
+  100px 100px 80px rgba(0, 0, 0, 0.02)
+;
+
+background-image: url('img/cardboard.jpg');
+  background-position: left bottom;
+  background-size: cover;
+  transform: rotate(-2deg);
+}
+.game-cell {
+  width: 100%;
+  height: 100%;
+  /* max-height: 200px; */
+  border: 2px dotted #df4a3693;
+  /* border: 2px dotted rgb(157, 216, 240); */
+  box-sizing: border-box;
+  background-color: #0084ff00;
+  cursor: pointer;
+  position: relative;
+  
+}
+.item-image {
+  position: absolute;
+  display: block;
+  margin: auto;
+  min-width: 100%;
+  min-height: 100%;  
+  width: 100%;
+  height: auto;
+  
+}
+.lower-right-align{
+  position: absolute;
+  bottom: 0px;
+  right: 0.25vw;
+  margin: 0;
+  font-weight: bold;
+  color: aliceblue;
+  font-size: 40px;
+  font-family: 'Comforter', cursive;
+}
+/* .cell-occupied{
+} */
+.left-flex{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.left-half{
+  width: 40vw;
+  margin-right: -1vw;
+  border-radius: 0px;
+  height: 60vh;
+  /* border: 1px solid red; */
+  background-image: url('img/paper-worn.jpg');
+  background-position: bottom right;
+  background-size: cover;
+  text-align: center;
+  color: rgba(182, 0, 0, 0.589);
+}
+.right-half{
+    width: 40vw;
+    height: 60vh;
+    position: relative;
+    
+  background-image: url('img/paper-worn.jpg');
+  background-position: left;
+  background-size: cover;
+}
+
+.paper-stack{
+    width: 40vw;
+    height: 60vh;
+    position: absolute;
+    top: 22vh;
+    right: 6vw;
+  background-image: url('img/paper-worn.jpg');
+  background-position: left;
+  background-size: cover;
+  box-shadow:
+  2.8px 2.8px 2.2px rgba(0, 0, 0, 0.07),
+  6.7px 6.7px 5.3px rgba(0, 0, 0, 0.05),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.042),
+  22.3px 22.3px 17.9px rgba(0, 0, 0, 0.035),
+  41.8px 41.8px 33.4px rgba(0, 0, 0, 0.028),
+  100px 100px 80px rgba(0, 0, 0, 0.02)
+;
+transform: rotate(-5deg);
+}
+.paper-stack2{
+    width: 40vw;
+    height: 60vh;
+    position: absolute;
+    top: 21vh;
+    right: 6.7vw;
+  background-image: url('img/paper-worn.jpg');
+  background-position: left;
+  background-size: cover;
+  box-shadow:
+  2.8px 2.8px 2.2px rgba(0, 0, 0, 0.07),
+  6.7px 6.7px 5.3px rgba(0, 0, 0, 0.05),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.042),
+  22.3px 22.3px 17.9px rgba(0, 0, 0, 0.035),
+  41.8px 41.8px 33.4px rgba(0, 0, 0, 0.028),
+  100px 100px 80px rgba(0, 0, 0, 0.02)
+;
+transform: rotate(10deg);
+}
+.container{
+  width: 100vw;
+  height: 100vh;
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 2vh;
+  /* font-family: 'Dancing Script', cursive; */
+  font-family: 'Comforter', cursive;
+  font-size: 2vh;
+  letter-spacing: 0.6vw;
+  word-spacing: 5px;
+  background-color: rgba(0,0,0,0.1);
+    background-image: url('img/wood-desk.jfif');
+  background-position: center;
+  background-size: cover;
+}
+.container h1{
+  padding-top: 40px;
+  padding-bottom: 10px;
+  margin: 0;
+}
+hr {
+  margin: 0;
+  margin-top: 0.2vh;
+}
+/* styling red vertical line */
+.paper::before {
+  content: '';
+  width: 2px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 5vw;
+  /* background-color: rgba(255,0,0,0.6); */
+  border-left: 1px solid #ffaa9f;
+  border-right: 1px solid #ffaa9f;
+}
+
+/* styling blue horizontal lines */
+.pattern {
+  height: 60vh;
+  color: rgba(59, 59, 59, 0.774);
+  background-image: repeating-linear-gradient(rgba(0,0,0,0) 0px, rgba(0,0,0,0) 5vh, rgb(157, 216, 240) 5.2vh);
+  box-shadow:
+  2.8px 2.8px 2.2px rgba(0, 0, 0, 0.07),
+  6.7px 6.7px 5.3px rgba(0, 0, 0, 0.05),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.042),
+  22.3px 22.3px 17.9px rgba(0, 0, 0, 0.035),
+  41.8px 41.8px 33.4px rgba(0, 0, 0, 0.028),
+  100px 100px 80px rgba(0, 0, 0, 0.02)
+;
+}
+
+/* styling text content */
+.content {
+  padding-top: 6px;
+  padding-left: 6vw;
+  padding-right: 16px;
+  line-height: 5.2vh;
+  /* font-family: 'Dancing Script', cursive; */
+  font-family: 'Comforter', cursive;
+  font-size: 5vh;
+  letter-spacing: 1px;
+  word-spacing: 5px;
+}
+.content a{
+  text-decoration: none;
+}
+
+.paperclip{
+  position: absolute;
+  background-image: url('img/paperclip.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 5vw;
+  height: 10vh;
+  left: 12vw;
+  top: 17.6vh;
+}
+.item-image-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.item-image-effects{
+  position: absolute;
+}
+.item-image-effects{
+  height: 200%;
+  width: 200%;
+  
+  left: -5vw;
+  top: -8vh;
+}
+</style>
+<div class="container">
+  <div class="paperclip"></div>
+    <div class="left-half">
+      <h1>INVENTORY:</h1>
+      <hr>
+      <hr>
+    <div class="left-flex">
+      <div class="game">
+            <% for(let i = 0; i < user.inventory_size; i++) { %>
+              <% if(user.inventory[i]) {%>
+            <div id="cell<%= i %>" onclick="select('cell<%= i %>','<%= user.inventory[i].name %>', '<%= user.inventory[i].quantity %>' )" class="game-cell cell-occupied">
+                <% if(user.inventory[i]) {%>
+                <div class="item-image-container">
+                  <div class="item-image-effects">
+                    <img class="item-image" src="https://i.pinimg.com/originals/17/0b/55/170b55f5d7238e5e3ff41436ce3091d4.gif" alt="">
+                  </div>
+                  <img class="item-image" src="https://cdn.discordapp.com/attachments/917599626490687538/917736052410695680/Natural_Selection_sm.png" alt="">
+                  <!-- <p class="item-image"><%= user.inventory[i].name.toUpperCase() %></p> -->
+                  <p class="lower-right-align">x<%= user.inventory[i].quantity %></p>
+                </div>                  
+                <% }; %>
+            </div>
+            <% }else {%>
+              <div id="cell<%= i %>" onclick="select('cell<%= i %>','Empty', '0' )" class="game-cell"></div>
+            <% }}; %>
+        </div>
+    </div>
+    </div>
+    <div class="paper-stack"><div class="paper">
+      <div class="pattern"></div></div></div>
+    <div class="paper-stack2"><div class="paper">
+      <div class="pattern"></div></div></div>
+    <div class="right-half">
+    <div class="paper">
+      <div class="pattern">
+        <div class="content">
+          <br>
+          <br>
+          <b>Inventory Details:</b>
+          <div id="name"></div>
+          <div id="quantity"></div>
+          <div id="operation"></div>
+        </div>
+      </div>
+      </div>
+    </div>
+</div>
+
+<script>
+  var select = (id, name, quantity) => {
+    document.getElementById('name').innerHTML = `Name: ${name}`;
+    document.getElementById('quantity').innerHTML = `Quantity: ${quantity}`;
+    document.getElementById('operation').innerHTML = `
+    <a href="">Use...?</a> <br>
+    <a href="">Destroy...?</a> <br>
+    <a href="">Equip...?</a> <br>
+    <a href="">Trade...?</a> 
+    `;
+  }
+</script>
+</body>
+</html>

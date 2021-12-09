@@ -160,5 +160,10 @@ exports.addBones = async (req, res) => {
 exports.addItem = (req, res) => {
 }
 
-
+exports.displayInventory = async (req, res) => {
+    req.body.uuid = "3ffd8a53-ff55-4632-8ebe-54b73b07e1a1"
+    const user = await USERS.findOne({uuid: req.body.uuid})
+    // res.send(user)
+    res.render('inventory', {user: user})
+}
 // module.exports = {addInventory, removeInventory}

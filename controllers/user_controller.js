@@ -2,6 +2,7 @@
 const USERS = require("../db").db().collection("USERS");
 const NPC = require("../db").db().collection("NPC");
 const postController = require("./post_controller");
+const sheets = require("./sheets")
 
 exports.registerUser = (req, res) => {
     // add starter stats
@@ -239,4 +240,15 @@ exports.kill = async (req, res) => {
     }catch(e){
         console.log(e)
     }
+}
+exports.newspaper = async (req, res) => {
+    const data = (await sheets.readSheet(`Newspaper!A:D`, '1K1Eg2MIBx3_FHPhzHM_SoU8PgVIoEhyqAgYgh7bfmlo')).data.values.slice(1)
+    
+    res.render('newspaper', {data: data})
+    // res.send(data)
+}   
+
+exports.profile = async (req, res) => {
+    const user = await USERS.findOne({uuid: req.params.uuid})
+    res.render('profile', {user: user})
 }
