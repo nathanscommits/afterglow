@@ -1,7 +1,8 @@
 key urlRequestId;
 string url;
 key HTTP_REQUEST_ID;
-string URL = "https://afterglow.loca.lt";
+// string URL = "https://afterglow.loca.lt";
+string URL = "https://afterglowgame.herokuapp.com";
 // string URL = "https://afterglow2.loca.lt";
 float VERSION = 0.1;
 
@@ -79,16 +80,30 @@ integer TARGET_CH = -8143425; integer COOLDOWN_BOOL; key TARGET; integer REZ_CHA
 list COLLISION_OBJECTS; list SENSOR_OBJECTS; string STATS; float AP = 100;
 vector LKL; 
 integer HUD_COMS = -235242;
+string ECTO;
+string ECTO_MAX;
+string PK;
+string PK_MAX;
+string BONE;
+
 PARSE_HTTP(string body) {
-    llRegionSay(HUD_COMS, body);
+    
     if(llJsonGetValue(body, ["display"]) != JSON_INVALID) {
         STATS = llJsonGetValue(body, ["display"]);
+        list stats = llJson2List(STATS);
+        ECTO = (string)llList2Integer(stats, 0);
+        ECTO_MAX = (string)llList2Integer(stats, 1);
+        PK = (string)llList2Integer(stats, 2);
+        PK_MAX = (string)llList2Integer(stats, 3);
+        BONE = (string)llList2Integer(stats, 4);
         llMessageLinked(LINK_THIS, 2, llJsonGetValue(body, ["display"]), "display");
+        // llRegionSay(HUD_COMS, "/spellbar/"+ECTO+"/"+ECTO_MAX+"/"+PK+"/"+PK_MAX+"/"+llKey2Name(TARGET)+"/"+BONE+"/");
     }
     //cooldown control
     if(llJsonGetValue(body, ["cooldown"]) != JSON_INVALID && llJsonGetValue(body, ["cooldown"]) != JSON_NULL){
         COOLDOWN_BOOL = TRUE;
         llSetTimerEvent((float)llJsonGetValue(body, ["cooldown"]));
+        // llRegionSay(HUD_COMS, "COOLDOWN:"+llJsonGetValue(body, ["cooldown"]));
     }
     //animate agent
     if(llJsonGetValue(body, ["animate"]) != JSON_INVALID) animate(llJsonGetValue(body, ["animate"]));
@@ -110,6 +125,8 @@ PARSE_HTTP(string body) {
     if(llJsonGetValue(body, ["attach"]) != JSON_INVALID) attach_object(llJsonGetValue(body, ["attach"]));
     //camera
     if(llJsonGetValue(body, ["camera"]) != JSON_INVALID) cam(llParseString2List(llJsonGetValue(body, ["camera"]), [","], [""]));
+
+    
 }
 
 INNIT(){
@@ -248,8 +265,11 @@ default{
         if(n == 4 && id == "ap_update") {
             if((float)m == AP) return;
             AP = (float)m;
+            PK = (string)((integer)AP);
+            // llRegionSay(HUD_COMS, "/spellbar/"+ECTO+"/"+ECTO_MAX+"/"+PK+"/"+PK_MAX+"/"+llKey2Name(TARGET)+"/"+BONE+"/");
             post("/ap_update", llList2Json(JSON_OBJECT, [
                 "ap", (string)AP,
+                "target", (string)TARGET,
                 "uuid", llGetOwner()
             ]));
         }

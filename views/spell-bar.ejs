@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.socket.io/3.0.5/socket.io.min.js"></script>
+    <script defer src="/spellbar.js"></script>
 </head>
 <body>
     <style>
@@ -156,6 +158,7 @@
             width: 10vw;
         }
     </style>
+    
     <!-- <img style="height: 100vh; width: 100vw;" src="https://i.gyazo.com/aef66d33d9a20943e1bb4b1409a8e448.png" alt=""> -->
     <div class="container">
         <div class="left-align">
@@ -169,22 +172,22 @@
             </div>
         </div>
         <div class="right-align">
-            <div class="text-info"><span>Pandora's Toy Box, AFTERGLOW</span>  <span style="float: right;">Targeting: <%= user.slname %></span></div>
+            <div class="text-info"><span>Pandora's Toy Box, AFTERGLOW</span>  <span id="target" style="float: right;">Targeting: <%= user.target %></span></div>
             <div class="second-container">
                 <div class="left-align2">
-                    <div class="ecto-bar" style="width: <%= user.ecto %>%;">ECTO <%= user.ecto %>/<%= user.ecto_max %></div>
-                    <div class="pk-bar" style="width: <%= user.ap %>%;">PK <%= user.ap %>/<%= user.ap_max %></div>
+                    <div class="ecto-bar" id="ecto-bar" style="width: <%= user.ecto %>%;">ECTO <%= user.ecto %>/<%= user.ecto_max %></div>
+                    <div class="pk-bar" id="pk-bar" style="width: <%= user.ap %>%;">PK <%= user.ap %>/<%= user.ap_max %></div>
                 </div>
                 <div class="right-align2">
-                    <div class="bones-balance">₿$ <%= user.bone %></div>
+                    <div class="bones-balance" id="bones-balance">₿$ <%= user.bone %></div>
                 </div>
             </div>
             <div class="spell-container">
-                <% if(parseInt(cooldown) <= 0){  cooldown = ''; } %>
-                <div class="spell" id="spell-1"><span class="cooldown"><%= cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918169498450796544/Brain_Fog_sm.png" alt=""></div>
-                <div class="spell" id="spell-2"><span class="cooldown"><%= cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918162174290051083/Degauss_sm.png" alt=""></div>
-                <div class="spell" id="spell-3"><span class="cooldown"><%= cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918157604151255110/Cold_Spot_sm.png" alt=""></div>
-                <div class="spell" id="spell-4"><span class="cooldown"><%= cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918147448256466974/Shattered_Mirror_sm.png" alt=""></div>
+                <% if(parseInt(user.cooldown) <= 0){  user.cooldown = ''; } %>
+                <div class="spell" id="spell-1"><span class="cooldown"><%= user.cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918169498450796544/Brain_Fog_sm.png" alt=""></div>
+                <div class="spell" id="spell-2"><span class="cooldown"><%= user.cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918162174290051083/Degauss_sm.png" alt=""></div>
+                <div class="spell" id="spell-3"><span class="cooldown"><%= user.cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918157604151255110/Cold_Spot_sm.png" alt=""></div>
+                <div class="spell" id="spell-4"><span class="cooldown"><%= user.cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918147448256466974/Shattered_Mirror_sm.png" alt=""></div>
                 <div class="spell" id="spell-5"></div>
             </div>
             

@@ -9,9 +9,11 @@ const conversationController = require("./controllers/NPC/conversation_controlle
 
 // router.get("/converse/:message", conversationController.responses)
 router.post("/converse", conversationController.responses)
-router.get("/", (req, res) => {
-  res.send("Website is working!")
-});
+router.get("/", spellController.spellBar)
+// router.get("/", (req, res) => {
+//   res.render('websocket')
+//   // res.send("Website is working!")
+// });
 router.get("/getall", userController.getAllUsers);
 router.get("/newspaper", userController.newspaper);
 router.get("/inventory", inventoryController.displayInventory);
@@ -37,8 +39,10 @@ router.post("/getInventory", inventoryController.getInventory)
 router.post("/ap_update", spellController.apUpdate)
 
 router.get("/ui", (req, res) => res.render('ui'))
-router.get("/spellbar/:cooldown", spellController.spellBar)
 
 
+
+// router.get("/updatesocket", async (req, res) => {
+// })
 
 module.exports = router;

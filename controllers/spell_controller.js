@@ -2,20 +2,34 @@ const SPELLS = require("../db").db().collection("SPELLS");
 const USERS = require("../db").db().collection("USERS");
 const postController = require("./post_controller");
 
+
+let update = async (req, user) => {
+    // const user = await USERS.findOne({slname: 'Sharky Piggins'})
+
+    var io = req.app.get('socketio');
+      io.emit(user.uuid, user);
+    //   res.send('sent')
+}
+
+
 // Qualities of a spell
     // AOE/single target
     // stationary/moving
     // target, power, crit, range, duration, cost, cooldown, effect
 
+
 exports.apUpdate = async (req, res) => {
-    await USERS.updateOne({uuid: req.body.uuid}, {$set: {ap: parseInt(req.body.ap)}}, {upsert: true})
+    await USERS.updateOne({uuid: req.body.uuid}, {$set: {ap: parseInt(req.body.ap), target: req.body.target}}, {upsert: true})
     let caster = await USERS.findOne({uuid: req.body.uuid})
+    update(req, caster)
     console.log(req.body)
-    res.send({display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max]});
+    res.send({display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max, caster.bone]});
 }
+
+
 exports.spellBar = async (req, res) => {
     const user = await USERS.findOne({slname: 'Sharky Piggins'})
-    res.render('spell-bar', {user: user, cooldown: req.params.cooldown})
+    res.render('spell-bar', {user: user})
 }
   
 exports.castSpell = async (req, res) => {
@@ -63,7 +77,7 @@ try{
                    
                    preSpell(caster, target, spell_data);
                    SpellEffects(caster, target, spell_data);
-                   postSpell(caster, target, spell_data);
+                   postSpell(req, caster, target, spell_data);
                    res.send("Cast complete")
                 }
             } else {
@@ -97,7 +111,7 @@ let preSpell = async (caster, target, spell_data) =>{
     //update casters AP ammount (this happens in postSpell now)
     // await USERS.updateOne({uuid: caster.uuid}, {$set: {ap: caster.ap}}, { upsert: true })
     // postController.post(caster.url, {
-    //     display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max]
+    //     display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max, caster.bone]
     // });
 
 
@@ -145,7 +159,7 @@ let preSpell = async (caster, target, spell_data) =>{
     
 }
 
-let postSpell = async (caster, target, spell_data) => {
+let postSpell = async (req, caster, target, spell_data) => {
     
     
     
@@ -154,7 +168,8 @@ let postSpell = async (caster, target, spell_data) => {
     else if(target.ecto > target.ecto_max) target.ecto = target.ecto_max
     caster.ap -= spell_data.cost;
     
-    await USERS.updateOne({uuid: caster.uuid}, {$set: {ap: caster.ap, ecto: caster.ecto}}, { upsert: true })
+    await USERS.updateOne({uuid: caster.uuid}, {$set: {ap: caster.ap, ecto: caster.ecto, target: req.body.target}}, { upsert: true })
+    update(req, caster)
     caster.stat_buffs.cooldown *= parseFloat(spell_data.cooldown);
     caster.ecto_max *= caster.stat_buffs.ecto_max
     caster.ap_max *= caster.stat_buffs.ap_max
@@ -164,12 +179,13 @@ let postSpell = async (caster, target, spell_data) => {
         if(spell_data.cast_particle != undefined) spell_props.particle = spell_data.cast_particle
     postController.post(caster.url, {
         cooldown: parseFloat(caster.stat_buffs.cooldown),
-        display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max],
+        display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max, caster.bone],
         ...spell_props
     });
 
     
     await USERS.updateOne({uuid: target.uuid}, {$set: {ecto: target.ecto, ap: target.ap, effects: target.effects, stat_buffs: target.stat_buffs, ecto_max: target.ecto_max, ap_max: target.ap_max}}, { upsert: true });
+    update(req, target)
     target.ecto_max *= target.stat_buffs.ecto_max
     target.ap_max *= target.stat_buffs.ap_max
     spell_props = {};
@@ -177,7 +193,7 @@ let postSpell = async (caster, target, spell_data) => {
     if(spell_data.hit_animation != undefined) spell_props.animate = spell_data.hit_animation
     if(spell_data.hit_particle != undefined) spell_props.particle = spell_data.hit_particle
     postController.post(target.url, {
-        display: [target.ecto, target.ecto_max, target.ap, target.ap_max],
+        display: [target.ecto, target.ecto_max, target.ap, target.ap_max, target.bone],
         impulse: target.stat_buffs.impulse,
         cooldown: parseFloat(target.stat_buffs.cooldown),
         owner_say: spell_data.name + " has been cast on you. " + spell_data.desc,
@@ -194,6 +210,7 @@ let postSpell = async (caster, target, spell_data) => {
         
         
         await USERS.updateOne({uuid: target.uuid}, {$set: {ecto: target.ecto, ap: target.ap, effects: target.effects, stat_buffs: target.stat_buffs, ecto_max: target.ecto_max, ap_max: target.ap_max}}, { upsert: true });
+        update(req, target)
         target.ecto_max *= target.stat_buffs.ecto_max
         target.ap_max *= target.stat_buffs.ap_max
         spell_props = {};
@@ -201,7 +218,7 @@ let postSpell = async (caster, target, spell_data) => {
         if(spell_data.hit_animation != undefined) spell_props.animate = spell_data.hit_animation
         if(spell_data.hit_particle != undefined) spell_props.particle = spell_data.hit_particle
         postController.post(target.url, {
-            display: [target.ecto, target.ecto_max, target.ap, target.ap_max],
+            display: [target.ecto, target.ecto_max, target.ap, target.ap_max, target.bone],
             impulse: target.stat_buffs.impulse,
             cooldown: parseFloat(target.stat_buffs.cooldown),
             ...spell_props
@@ -228,8 +245,9 @@ let postSpell = async (caster, target, spell_data) => {
             target.ap_max *= target.stat_buffs.ap_max
 
             await USERS.updateOne({uuid: target.uuid}, {$set: {ecto: target.ecto, ap: target.ap, effects: target.effects, stat_buffs: target.stat_buffs, ecto_max: target.ecto_max, ap_max: target.ap_max}}, { upsert: true });
+            update(req, target)
             postController.post(target.url, {
-                display: [target.ecto, target.ecto_max, target.ap, target.ap_max],
+                display: [target.ecto, target.ecto_max, target.ap, target.ap_max, target.bone],
                 impulse: target.stat_buffs.impulse,
                 cooldown: parseFloat(target.stat_buffs.cooldown)
             });
