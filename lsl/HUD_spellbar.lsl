@@ -1,7 +1,7 @@
 integer HUD_COMS = -235242;
 float COOLDOWN = 0;
 // string URL = "https://afterglow.loca.lt/";
-string URL = "https://afterglowgame.herokuapp.com";
+string URL = "http://afterglowgame.herokuapp.com";
 refresh_url(string url) {
     //  llClearPrimMedia( 0 );
     // llOwnerSay("TRYING TO SET MEDIA");
