@@ -35,13 +35,13 @@ exports.targetUpdate = async (req, res) => {
 }
 let cooldown = async (req, person, cooldown_time) => {
     //run a timeout function ever 1 second and check if cooldown has ended
-    let cooling = async (req) => {
+    let cooling = async () => {
         let user = await USERS.findOne({uuid: person})
         if(user.cooldown > 0) {
             user.cooldown -= 1;
             update(req, user)
             await USERS.updateOne({uuid: person}, {$set: {cooldown: user.cooldown}})
-            setTimeout(cooling(req), 1);
+            setTimeout(cooling, 1000);
         } else {
             await USERS.updateOne({uuid: person}, {$set: {cooldown: 0, silenced: false}})
             update(req, user) //might not need this here
@@ -50,7 +50,7 @@ let cooldown = async (req, person, cooldown_time) => {
     let user = await USERS.findOne({uuid: person})
     user.cooldown += cooldown_time;
     await USERS.updateOne({uuid: person}, {$set: {cooldown: user.cooldown, silenced: true}})
-    setTimeout(cooling(req), 1);
+    setTimeout(cooling, 1000);
 }
 
 exports.spellBar = async (req, res) => {
