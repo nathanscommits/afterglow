@@ -34,6 +34,7 @@ default
     state_entry()
     {
         // llListen(HUD_COMS, "", "", "");
+        URL = URL + "/?uuid=" + (string)llGetOwner();
         refresh_url(URL);
         // llSetTimerEvent(1);
     }

@@ -16,7 +16,7 @@ Skill bar
 
 
 TODO:
-cooldowns
 test heavy server load
-add in spells
 fix that impulse getting stuck or going negative bug
+add in spells--------
+cooldowns----------

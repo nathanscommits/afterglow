@@ -52,10 +52,11 @@ let cooldown = async (req, person, cooldown_time) => {
     await USERS.updateOne({uuid: person}, {$set: {cooldown: cooldown_time, silenced: true}})
     setTimeout(cooling, 1000);
 }
-
 exports.spellBar = async (req, res) => {
-    const user = await USERS.findOne({slname: 'Sharky Piggins'})
-    res.render('spell-bar', {user: user})
+    var query = require('url').parse(req.url,true).query;
+    const user = await USERS.findOne({uuid: query.uuid})
+    if(user)res.render('spell-bar', {user: user})
+    else res.send("no user")
 }
   
 exports.castSpell = async (req, res) => {
@@ -351,6 +352,7 @@ exports.assignSpell = async (req, res) => {
     }
 
     await USERS.updateOne({uuid: req.body.uuid}, {$set: {skills: user.skills}})
+    update(req, user)
     res.send('updated spells')
 }
 exports.assignSpellForm = async (req, res) => {
