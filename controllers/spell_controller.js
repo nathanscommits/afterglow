@@ -199,6 +199,7 @@ let postSpell = async (req, caster, target, spell_data) => {
     caster.stat_buffs.cooldown *= parseFloat(spell_data.cooldown);
     caster.ecto_max *= caster.stat_buffs.ecto_max
     caster.ap_max *= caster.stat_buffs.ap_max
+    console.log(`caster cooldown: ${caster.stat_buffs.cooldown}`)
     cooldown(req, caster.uuid, parseFloat(caster.stat_buffs.cooldown))
     let spell_props = {};
         if(spell_data.cast_sound != undefined) spell_props.sound = spell_data.cast_sound
@@ -219,6 +220,7 @@ let postSpell = async (req, caster, target, spell_data) => {
     if(spell_data.hit_sound != undefined) spell_props.sound = spell_data.hit_sound
     if(spell_data.hit_animation != undefined) spell_props.animate = spell_data.hit_animation
     if(spell_data.hit_particle != undefined) spell_props.particle = spell_data.hit_particle
+    console.log(`target cooldown: ${caster.stat_buffs.cooldown}`)
     cooldown(req, target.uuid, parseFloat(target.stat_buffs.cooldown))
     postController.post(target.url, {
         display: [target.ecto, target.ecto_max, target.ap, target.ap_max, target.bone],
