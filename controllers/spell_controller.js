@@ -62,6 +62,7 @@ exports.castSpell = async (req, res) => {
 try{
     console.log(req.body)
     let caster = await USERS.findOne({uuid: req.body.uuid});
+    if (caster.silenced || caster.cooldown > 0) res.send("You can't cast that yet")
     let target;
     if(req.body.uuid != req.body.target || req.body.target != "") {
         target = await USERS.findOne({uuid: req.body.target});

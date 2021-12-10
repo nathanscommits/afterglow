@@ -102,7 +102,7 @@ PARSE_HTTP(string body) {
     //cooldown control
     if(llJsonGetValue(body, ["cooldown"]) != JSON_INVALID && llJsonGetValue(body, ["cooldown"]) != JSON_NULL){
         COOLDOWN_BOOL = TRUE;
-        llSetTimerEvent((float)llJsonGetValue(body, ["cooldown"]));
+        llSetTimerEvent(((float)llJsonGetValue(body, ["cooldown"])+1));
         // llRegionSay(HUD_COMS, "COOLDOWN:"+llJsonGetValue(body, ["cooldown"]));
     }
     //animate agent
