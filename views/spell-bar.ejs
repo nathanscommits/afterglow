@@ -18,6 +18,8 @@
             /* overflow-x: hidden; */
             font-size: 2vw;
             font-weight: bold;
+            background-color: rgb(37, 37, 36);
+            color: bisque;
         }
         .container{
             margin-top: 4vw;
@@ -47,6 +49,7 @@
             background-color: rgb(0, 0, 0);
             border-radius: 100vw;
             position: relative;
+            
         }
         .upper-circle{
             /* border: 1px solid black; */
@@ -71,6 +74,8 @@
             margin-top: 5%;
             background-color: white;
             border-radius: 0  0 100vw 100vw;
+            background-image: url('https://i.pinimg.com/originals/5a/bf/82/5abf82bfded652ae54159e7677b79057.gif');
+            background-size: cover;
         }
         .inner-circle-top{
             position: absolute;
@@ -83,6 +88,8 @@
             margin-bottom: 5%;
             background-color: white;
             border-radius: 100vw 100vw 0  0 ;
+            background-image: url('https://i.pinimg.com/originals/17/0b/55/170b55f5d7238e5e3ff41436ce3091d4.gif');
+            background-size: cover;
         }
         .text-info{
             text-align: justify;
@@ -114,6 +121,16 @@
             background-color: red;
             width: 100%;
             border-radius: 0.5vw;
+            background-image: url('https://i.pinimg.com/originals/5a/bf/82/5abf82bfded652ae54159e7677b79057.gif');
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
+        }
+        #ecto-bar-span{
+            background-color: rgba(255, 0, 0, 0.568);
+            width: 100%;
+            height: 100%;
+            color: rgb(251, 255, 0);
         }
         .pk-bar{
             display: block;
@@ -122,6 +139,16 @@
             background-color: purple;
             width: 100%;
             border-radius: 0.5vw;
+            background-image: url('https://i.pinimg.com/originals/5a/bf/82/5abf82bfded652ae54159e7677b79057.gif');
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
+        }
+        #pk-bar-span{
+            background-color: rgba(128, 0, 128, 0.5);
+            width: 100%;
+            height: 100%;
+            color: rgb(255, 0, 170);
         }
         .bones-balance{
             display: block;
@@ -158,6 +185,33 @@
             text-align: center;
             width: 10vw;
         }
+        .spell {
+            position: relative;
+            overflow: hidden;
+        }
+        .item-image-effects{
+            position: absolute;
+            height: 120%;
+            width: 120%;
+            
+            left: -1vw;
+            top: -1vh;
+        }
+        .ontop {
+            position: absolute;
+            z-index: 2;
+        }
+        /* .bar-energy {
+            position: absolute;
+            overflow: hidden;
+            width: 10vw;
+            height: 3vw;
+            border-radius: 5vw;
+        }
+        .bar-energy img{
+            width: 100%;
+            height: 100%;
+        } */
     </style>
     
     <!-- <img style="height: 100vh; width: 100vw;" src="https://i.gyazo.com/aef66d33d9a20943e1bb4b1409a8e448.png" alt=""> -->
@@ -176,8 +230,13 @@
             <div class="text-info"><span>Pandora's Toy Box, AFTERGLOW</span>  <span id="target" style="float: right;">Targeting: <%= user.target %></span></div>
             <div class="second-container">
                 <div class="left-align2">
-                    <div class="ecto-bar" id="ecto-bar" style="width: <%= (user.ecto/user.ecto_max * 100) %>%;"><span id="ecto-bar-span" style="position: absolute;">ECTO <%= user.ecto %>/<%= user.ecto_max %></span></div>
-                    <div class="pk-bar" id="pk-bar" style="width: <%= (user.ap/user.ap_max * 100) %>%;"><span id="pk-bar-span" style="position: absolute;">PK <%= user.ap %>/<%= user.ap_max %></span></div>
+                    <div class="ecto-bar" id="ecto-bar" style="width: <%= (user.ecto/user.ecto_max * 100) %>%;">
+                        <!-- <div class="bar-energy"><img src="https://i.pinimg.com/originals/5a/bf/82/5abf82bfded652ae54159e7677b79057.gif" alt=""></div> -->
+                        <span id="ecto-bar-span" style="position: absolute;">ECTO <%= user.ecto %>/<%= user.ecto_max %></span>
+                    </div>
+                    <div class="pk-bar" id="pk-bar" style="width: <%= (user.ap/user.ap_max * 100) %>%;">
+                        <span id="pk-bar-span" style="position: absolute;">PK <%= user.ap %>/<%= user.ap_max %></span>
+                    </div>
                 </div>
                 <div class="right-align2">
                     <div class="bones-balance" id="bones-balance">₿$ <%= user.bone %></div>
@@ -197,11 +256,29 @@
                     if(user.skills[key].assigned == 3) spell_images.three = user.skills[key].image
                     if(user.skills[key].assigned == 4) spell_images.four = user.skills[key].image
                 } %>
-                <div class="spell" id="spell-1"><span id="cooldown-1" class="cooldown"><%= user.cooldown %></span><% if(spell_images.one != ''){ %><img src="<%= spell_images.one %>" alt=""><%}%></div>
-                <div class="spell" id="spell-2"><span id="cooldown-2" class="cooldown"><%= user.cooldown %></span><% if(spell_images.two != ''){ %><img src="<%= spell_images.two %>" alt=""><%}%></div>
-                <div class="spell" id="spell-3"><span id="cooldown-3" class="cooldown"><%= user.cooldown %></span><% if(spell_images.three != ''){ %><img src="<%= spell_images.three %>" alt=""><%}%></div>
-                <div class="spell" id="spell-4"><span id="cooldown-4" class="cooldown"><%= user.cooldown %></span><% if(spell_images.four != ''){ %><img src="<%= spell_images.four %>" alt=""><%}%></div>
-                <div class="spell" id="spell-5"></div>
+                <div class="spell" id="spell-1"><span id="cooldown-1" class="cooldown"><%= user.cooldown %></span>
+                    <div class="item-image-effects">
+                        <img class="item-image" src="https://i.pinimg.com/originals/17/0b/55/170b55f5d7238e5e3ff41436ce3091d4.gif" alt="">
+                      </div>
+                    <% if(spell_images.one != ''){ %><img class="ontop" src="<%= spell_images.one %>" alt=""><%}%></div>
+                <div class="spell" id="spell-2"><span id="cooldown-2" class="cooldown"><%= user.cooldown %></span>
+                    <div class="item-image-effects">
+                        <img class="item-image" src="https://i.pinimg.com/originals/17/0b/55/170b55f5d7238e5e3ff41436ce3091d4.gif" alt="">
+                      </div>
+                    <% if(spell_images.two != ''){ %><img class="ontop" src="<%= spell_images.two %>" alt=""><%}%></div>
+                <div class="spell" id="spell-3"><span id="cooldown-3" class="cooldown"><%= user.cooldown %></span>
+                    <div class="item-image-effects">
+                        <img class="item-image" src="https://i.pinimg.com/originals/17/0b/55/170b55f5d7238e5e3ff41436ce3091d4.gif" alt="">
+                      </div>
+                    <% if(spell_images.three != ''){ %><img class="ontop" src="<%= spell_images.three %>" alt=""><%}%></div>
+                <div class="spell" id="spell-4"><span id="cooldown-4" class="cooldown"><%= user.cooldown %></span>
+                    <div class="item-image-effects">
+                        <img class="item-image" src="https://i.pinimg.com/originals/17/0b/55/170b55f5d7238e5e3ff41436ce3091d4.gif" alt="">
+                      </div>
+                    <% if(spell_images.four != ''){ %><img class="ontop" src="<%= spell_images.four %>" alt=""><%}%></div>
+                <div class="spell" id="spell-5">
+                    
+                </div>
             </div>
             
         </div>
