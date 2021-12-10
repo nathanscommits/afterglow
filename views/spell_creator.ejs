@@ -10,12 +10,13 @@
     <form action="/create_spell" method="post">
         name: <input type="text" name="name" id="" required><br>
         description: <input type="text" name="desc" id=""><br>
+        image: <input type="text" name="image" id=""><br>
         <br>
-        casting sound (uuid): <input type="text" name="cast_sound" id=""><br>
-        hit sound (uuid): <input type="text" name="hit_sound" id=""><br>
+        casting sound (uuid): <input value="1298b3e8-b247-4305-8cc2-968e24741ced" type="text" name="cast_sound" id=""><br>
+        hit sound (uuid): <input type="text" name="hit_sound" value="1298b3e8-b247-4305-8cc2-968e24741ced" id=""><br>
         <br>
         Casting animation: <input type="text" name="cast_animation" id=""><br>
-        Hit animation: <input type="text" name="hit_animation" id=""><br>
+        Hit animation: <input value="AD_Front_Impact_13" type="text" name="hit_animation" id=""><br>
        
         <br>
         type: <select name="type" id=""  value="attack">
@@ -40,25 +41,25 @@
             <option value="silence">silence</option>
         </select><br>
         <br>
-        damage: <input value="0" type="number" name="damage" id="" ><br>
-        cost: <input value="0" type="number" name="cost" id="" ><br>
-        crit: <input value="0" type="number" name="crit" id="" ><br>
+        damage: <input value="0" type="text" name="damage" id="" ><br>
+        cost: <input value="0" type="text" name="cost" id="" ><br>
+        crit: <input value="0" type="text" name="crit" id="" ><br>
         duration: (time per timer) <input value="0" type="number" name="duration" id="" ><br>
         ticks: (times that timer starts again for DOTS/HOTS) <input value="0" type="number" name="ticks" id="" ><br>
-        range: <input value="0" type="number" name="range" id="" ><br>
-        cooldown: <input value="0" type="number" name="cooldown" id="" ><br>
+        range: <input value="0" type="text" name="range" id="" ><br>
+        cooldown: <input value="0" type="text" name="cooldown" id="" ><br>
         <br>
-        buff_power: <input value="0" type="number" name="buff_power" id="" ><br>
-        buff_crit: <input value="0" type="number" name="buff_crit" id="" ><br>
-        buff_range: <input value="0" type="number" name="buff_range" id="" ><br>
-        buff_duration: <input value="0" type="number" name="buff_duration" id="" ><br>
-        buff_cost: <input value="0" type="number" name="buff_cost" id="" ><br>
-        buff_cooldown: <input value="0" type="number" name="buff_cooldown" id="" ><br>
-        buff_ecto_max: <input value="0" type="number" name="buff_ecto_max" id="" ><br>
-        buff_ap_max: <input value="0" type="number" name="buff_ap_max" id="" ><br>
-        buff_impulse: <input value="0" type="number" name="buff_impulse" id="" ><br>
-        buff_resistance: <input value="0" type="number" name="buff_resistance" id="" ><br>
-        buff_reflected: <input value="0" type="number" name="buff_reflected" id="" ><br>
+        buff_power: <input value="0" type="text" name="buff_power" id="" ><br>
+        buff_crit: <input value="0" type="text" name="buff_crit" id="" ><br>
+        buff_range: <input value="0" type="text" name="buff_range" id="" ><br>
+        buff_duration: <input value="0" type="text" name="buff_duration" id="" ><br>
+        buff_cost: <input value="0" type="text" name="buff_cost" id="" ><br>
+        buff_cooldown: <input value="0" type="text" name="buff_cooldown" id="" ><br>
+        buff_ecto_max: <input value="0" type="text" name="buff_ecto_max" id="" ><br>
+        buff_ap_max: <input value="0" type="text" name="buff_ap_max" id="" ><br>
+        buff_impulse: <input value="0" type="text" name="buff_impulse" id="" ><br>
+        buff_resistance: <input value="0" type="text" name="buff_resistance" id="" ><br>
+        buff_reflected: <input value="0" type="text" name="buff_reflected" id="" ><br>
 
 <br>
         <input type="submit" value="Submit">

@@ -294,6 +294,7 @@ try{
     let spell_object = {
         name: req.body.name,
         desc: req.body.desc,
+        image: req.body.image,
         type: req.body.type,
         scope: req.body.scope,
         duration: parseFloat(req.body.duration),
@@ -328,7 +329,34 @@ try{
     console.log(e)
 }
 }
+exports.assignSpell = async (req, res) => {
+    const user = await USERS.findOne({uuid: req.body.uuid})
+    let duplicate_checker = false;
+    for(var key in user.skills){
+        if(user.skills[key].assigned == req.body.assigned) {
+            user.skills[key].assigned = 0;
+        }
+        if(user.skills[key].name == req.body.name) {
+            user.skills[key].assigned = req.body.assigned
+            duplicate_checker = true;
+        }
+    }
+    if(!duplicate_checker) {
+        const spell_image = await SPELLS.findOne({name: req.body.name})
+        user.skills[req.body.name] = {
+            name: req.body.name,
+            assigned: req.body.assigned,
+            image: spell_image.image
+        }
+    }
 
+    await USERS.updateOne({uuid: req.body.uuid}, {$set: {skills: user.skills}})
+    res.send('updated spells')
+}
+exports.assignSpellForm = async (req, res) => {
+    const user = await USERS.findOne({uuid: req.params.uuid})
+    res.render('assign-spells', {user: user})
+}
 // let spell_object = {
 //     name: "example",
 //     desc: "a spell for testing code",

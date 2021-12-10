@@ -184,10 +184,22 @@
             </div>
             <div class="spell-container">
                 <% if(parseInt(user.cooldown) <= 0){  user.cooldown = ''; } %>
-                <div class="spell" id="spell-1"><span id="cooldown-1" class="cooldown"><%= user.cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918169498450796544/Brain_Fog_sm.png" alt=""></div>
-                <div class="spell" id="spell-2"><span id="cooldown-2" class="cooldown"><%= user.cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918162174290051083/Degauss_sm.png" alt=""></div>
-                <div class="spell" id="spell-3"><span id="cooldown-3" class="cooldown"><%= user.cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918157604151255110/Cold_Spot_sm.png" alt=""></div>
-                <div class="spell" id="spell-4"><span id="cooldown-4" class="cooldown"><%= user.cooldown %></span><img src="https://cdn.discordapp.com/attachments/917599626490687538/918147448256466974/Shattered_Mirror_sm.png" alt=""></div>
+                <% let spell_images = {
+                    one: '',
+                    two: '',
+                    three: '',
+                    four: '',
+                }
+                for(var key in user.skills) {
+                    if(user.skills[key].assigned == 1) spell_images.one = user.skills[key].image
+                    if(user.skills[key].assigned == 2) spell_images.two = user.skills[key].image
+                    if(user.skills[key].assigned == 3) spell_images.three = user.skills[key].image
+                    if(user.skills[key].assigned == 4) spell_images.four = user.skills[key].image
+                } %>
+                <div class="spell" id="spell-1"><span id="cooldown-1" class="cooldown"><%= user.cooldown %></span><% if(spell_images.one != ''){ %><img src="<%= spell_images.one %>" alt=""><%}%></div>
+                <div class="spell" id="spell-2"><span id="cooldown-2" class="cooldown"><%= user.cooldown %></span><% if(spell_images.two != ''){ %><img src="<%= spell_images.two %>" alt=""><%}%></div>
+                <div class="spell" id="spell-3"><span id="cooldown-3" class="cooldown"><%= user.cooldown %></span><% if(spell_images.three != ''){ %><img src="<%= spell_images.three %>" alt=""><%}%></div>
+                <div class="spell" id="spell-4"><span id="cooldown-4" class="cooldown"><%= user.cooldown %></span><% if(spell_images.four != ''){ %><img src="<%= spell_images.four %>" alt=""><%}%></div>
                 <div class="spell" id="spell-5"></div>
             </div>
             
