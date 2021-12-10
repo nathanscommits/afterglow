@@ -47,9 +47,9 @@ let cooldown = async (req, person, cooldown_time) => {
             update(req, user) //might not need this here
         }
     }
-    let user = await USERS.findOne({uuid: person})
-    user.cooldown += cooldown_time;
-    await USERS.updateOne({uuid: person}, {$set: {cooldown: user.cooldown, silenced: true}})
+    // let user = await USERS.findOne({uuid: person})
+    // user.cooldown += cooldown_time;
+    await USERS.updateOne({uuid: person}, {$set: {cooldown: cooldown_time, silenced: true}})
     setTimeout(cooling, 1000);
 }
 
@@ -220,12 +220,12 @@ let postSpell = async (req, caster, target, spell_data) => {
     if(spell_data.hit_sound != undefined) spell_props.sound = spell_data.hit_sound
     if(spell_data.hit_animation != undefined) spell_props.animate = spell_data.hit_animation
     if(spell_data.hit_particle != undefined) spell_props.particle = spell_data.hit_particle
-    console.log(`target cooldown: ${caster.stat_buffs.cooldown}`)
-    cooldown(req, target.uuid, parseFloat(target.stat_buffs.cooldown))
+    // console.log(`target cooldown: ${caster.stat_buffs.cooldown}`)
+    // cooldown(req, target.uuid, parseFloat(target.stat_buffs.cooldown))
     postController.post(target.url, {
         display: [target.ecto, target.ecto_max, target.ap, target.ap_max, target.bone],
         impulse: target.stat_buffs.impulse,
-        cooldown: parseFloat(target.stat_buffs.cooldown),
+        //cooldown: parseFloat(target.stat_buffs.cooldown),
         owner_say: spell_data.name + " has been cast on you. " + spell_data.desc,
         ...spell_props
     });
