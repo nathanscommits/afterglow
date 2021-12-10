@@ -68,6 +68,9 @@ exports.registerUser = (req, res) => {
             diminished: 0,
             npc: 0,
         },
+        skills: {
+
+        },
         inventory_size: 15,
         inventory: [],
         bank_size: 30,
@@ -86,7 +89,10 @@ exports.registerUser = (req, res) => {
             ecto_max: 1,
             ap_max: 1,
             impulse: 1
-        }
+        },
+        cooldown: 0,
+        target: 'none',
+        silenced: false,
     }
     USERS.insertOne(user);
     res.send(user);

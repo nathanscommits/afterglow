@@ -13,3 +13,10 @@ Skill bar
 //update when values change
 //values to track are
 // ecto, pk, bones, location, target, cooldowns, spell loadout, equipped potion
+
+
+TODO:
+cooldowns
+test heavy server load
+add in spells
+fix that impulse getting stuck or going negative bug

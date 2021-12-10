@@ -33,7 +33,25 @@ exports.targetUpdate = async (req, res) => {
     console.log(req.body)
     res.status(200).send('updated');
 }
-
+let cooldown = async (req, person, cooldown_time) => {
+    //run a timeout function ever 1 second and check if cooldown has ended
+    let cooling = async (req) => {
+        let user = await USERS.findOne({uuid: person})
+        if(user.cooldown > 0) {
+            user.cooldown -= 1;
+            update(req, user)
+            await USERS.updateOne({uuid: person}, {$set: {cooldown: user.cooldown}})
+            setTimeout(cooling(req), 1);
+        } else {
+            await USERS.updateOne({uuid: person}, {$set: {cooldown: 0, silenced: false}})
+            update(req, user) //might not need this here
+        }
+    }
+    let user = await USERS.findOne({uuid: person})
+    user.cooldown += cooldown_time;
+    await USERS.updateOne({uuid: person}, {$set: {cooldown: user.cooldown, silenced: true}})
+    setTimeout(cooling(req), 1);
+}
 
 exports.spellBar = async (req, res) => {
     const user = await USERS.findOne({slname: 'Sharky Piggins'})
@@ -181,6 +199,7 @@ let postSpell = async (req, caster, target, spell_data) => {
     caster.stat_buffs.cooldown *= parseFloat(spell_data.cooldown);
     caster.ecto_max *= caster.stat_buffs.ecto_max
     caster.ap_max *= caster.stat_buffs.ap_max
+    cooldown(req, caster.uuid, parseFloat(caster.stat_buffs.cooldown))
     let spell_props = {};
         if(spell_data.cast_sound != undefined) spell_props.sound = spell_data.cast_sound
         if(spell_data.cast_animation != undefined) spell_props.animate = spell_data.cast_animation
@@ -200,6 +219,7 @@ let postSpell = async (req, caster, target, spell_data) => {
     if(spell_data.hit_sound != undefined) spell_props.sound = spell_data.hit_sound
     if(spell_data.hit_animation != undefined) spell_props.animate = spell_data.hit_animation
     if(spell_data.hit_particle != undefined) spell_props.particle = spell_data.hit_particle
+    cooldown(req, target.uuid, parseFloat(target.stat_buffs.cooldown))
     postController.post(target.url, {
         display: [target.ecto, target.ecto_max, target.ap, target.ap_max, target.bone],
         impulse: target.stat_buffs.impulse,
@@ -228,7 +248,7 @@ let postSpell = async (req, caster, target, spell_data) => {
         postController.post(target.url, {
             display: [target.ecto, target.ecto_max, target.ap, target.ap_max, target.bone],
             impulse: target.stat_buffs.impulse,
-            cooldown: parseFloat(target.stat_buffs.cooldown),
+            //cooldown: parseFloat(target.stat_buffs.cooldown),
             ...spell_props
         });
 
@@ -257,7 +277,7 @@ let postSpell = async (req, caster, target, spell_data) => {
             postController.post(target.url, {
                 display: [target.ecto, target.ecto_max, target.ap, target.ap_max, target.bone],
                 impulse: target.stat_buffs.impulse,
-                cooldown: parseFloat(target.stat_buffs.cooldown)
+                //cooldown: parseFloat(target.stat_buffs.cooldown)
             });
         }
     }
