@@ -61,21 +61,25 @@ exports.targetUpdate = async (req, res) => {
 }
 let cooldown = async (req, person, cooldown_time, spell_num) => {
     //run a timeout function ever 1 second and check if cooldown has ended
+    var new_cooldown = {}
+        new_cooldown["combat.cooldown" + spell_num] = cooldown_time 
     let cooling = async () => {
         let user = await USERS.findOne({uuid: person.uuid})
         if(user.combat.cooldown[spell_num] > 0) {
-            user.combat.cooldown[spell_num] -= 1;
-            await USERS.updateOne({uuid: person.uuid}, {$set: {combat: user.combat}})
+            // user.combat.cooldown[spell_num] -= 1;
+            new_cooldown["combat.cooldown" + spell_num] -= 1;
+            await USERS.updateOne({uuid: user.uuid}, {$set: new_cooldown})
             setTimeout(cooling, 1000);
         } else {
-            await USERS.updateOne({uuid: person.uuid}, {$set: {combat: {cooldown: {[spell_num]: 0}}}})
+            new_cooldown["combat.cooldown" + spell_num] = 0;
+            await USERS.updateOne({uuid: user.uuid}, {$set: new_cooldown})
             //update(req, user) //might not need this here
         }
         update(req, user)
     }
     // let user = await USERS.findOne({uuid: person})
     // user.combat.cooldown += cooldown_time;
-    await USERS.updateOne({uuid: person.uuid}, {$set: {combat: {cooldown: {[spell_num]: cooldown_time}}}})
+    await USERS.updateOne({uuid: person.uuid}, {$set: new_cooldown})
     update(req, person)
     setTimeout(cooling, 1000);
 }
