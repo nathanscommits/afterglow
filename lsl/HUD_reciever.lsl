@@ -293,10 +293,7 @@ default{
         vector pos = llGetPos();
         while(num--){
             key av = llDetectedKey(num);
-            integer dis = llVecDist(
-                pos, 
-                llList2Vector( llGetObjectDetails(av, [OBJECT_POS])  , 0)
-            );
+            float dis = llVecDist( pos, llList2Vector( llGetObjectDetails(av, [OBJECT_POS])  , 0) );
             nearby += "{uuid:"+(string)av+",distance:"+(string)dis+"}";
         }
         list target_info = llGetObjectDetails(CAST_TARGET, [OBJECT_POS]);
@@ -313,7 +310,7 @@ default{
             "sim", llGetRegionName(),
             "version", VERSION,
             "ap", AP,
-            "nearby", nearby,
+            "nearby", llList2Json(JSON_ARRAY, nearby),
             "nearby_num", NEARBY
         ]);
         post("/castspell", json);

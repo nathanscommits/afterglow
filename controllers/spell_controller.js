@@ -88,8 +88,8 @@ exports.spellBar = async (req, res) => {
   
 exports.castSpell = async (req, res) => {
 try{
+    console.log(req.body)
     processSpell(req, res)
-    // console.log(req.body)
     // let caster = await USERS.findOne({uuid: req.body.uuid});
     // if (caster.combat.silenced || caster.combat.cooldown > 0) res.send("You can't cast that yet")
     // let target;
