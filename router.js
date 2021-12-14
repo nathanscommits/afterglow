@@ -25,9 +25,9 @@ router.get("/cod/:uuid/:slname", (req, res) => {
 router.get("/create_spell", (req, res) => {
   res.render("spell_creator")
 });
+router.get("/assign-spells/:uuid", spellController.assignSpellForm)
 router.post("/create_spell", spellController.createSpell)
 router.post("/assign-spells", spellController.assignSpell)
-router.get("/assign-spells/:uuid", spellController.assignSpellForm)
 router.post("/register", userController.registerUser)
 router.post("/get_user", userController.getUser)
 router.post("/new_user", userController.newUser)
