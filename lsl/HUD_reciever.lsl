@@ -16,27 +16,18 @@ post(string url, string json){
     );
 }
 
+integer NEARBY;
+key CAST_TARGET;
+key CAST_UUID;
+integer CAST_SPELL;
 cast(key uuid, key target, integer spell){
     animate("AD_Cast_Forward_1");
     llSetTimerEvent(2);
     COOLDOWN_BOOL = TRUE;
-    list target_info = llGetObjectDetails(target, [OBJECT_POS]);
-    vector target_pos = llList2Vector(target_info, 0);
-    vector pos = llGetPos();
-    string json = llList2Json(JSON_OBJECT, [
-        "uuid", uuid,
-        "slname", llKey2Name(uuid),
-        "target", target,
-        "target_name", llKey2Name(target),
-        "target_pos", target_pos,
-        "target_distance", llVecDist(pos, target_pos),
-        "spell", spell,
-        "coord", pos,
-        "sim", llGetRegionName(),
-        "version", VERSION,
-        "ap", AP
-    ]);
-    post("/castspell", json);
+    CAST_TARGET = target;
+    CAST_UUID = uuid;
+    CAST_SPELL = spell;
+    llSensor("", "", AGENT, 20, PI);
 }
 
 // string LAST_ANIM;
@@ -125,6 +116,13 @@ PARSE_HTTP(string body) {
     if(llJsonGetValue(body, ["attach"]) != JSON_INVALID) attach_object(llJsonGetValue(body, ["attach"]));
     //camera
     if(llJsonGetValue(body, ["camera"]) != JSON_INVALID) cam(llParseString2List(llJsonGetValue(body, ["camera"]), [","], [""]));
+    
+    if(llJsonGetValue(body, ["aoe_attack"]) != JSON_INVALID) {
+        llMessageLinked(LINK_THIS, 5, llJsonGetValue(body, ["aoe_attack"]), "aoe_attack");
+    }
+    if(llJsonGetValue(body, ["summon"]) != JSON_INVALID) {
+        llMessageLinked(LINK_THIS, 8, llJsonGetValue(body, ["summon"]), "summon");
+    }
 
     
 }
@@ -283,7 +281,42 @@ default{
                 // "target_name", llKey2Name(TARGET),
                 "uuid", llGetOwner()
             ]));
+        } else if(n == 6 && id == "agents_in_range") {
+            post("/aoe-damage", m);
         }
+    }
+
+    sensor( integer num )
+    {
+        NEARBY = num;
+        list nearby;
+        vector pos = llGetPos();
+        while(num--){
+            key av = llDetectedKey(num);
+            integer dis = llVecDist(
+                pos, 
+                llList2Vector( llGetObjectDetails(av, [OBJECT_POS])  , 0)
+            );
+            nearby += "{uuid:"+(string)av+",distance:"+(string)dis+"}";
+        }
+        list target_info = llGetObjectDetails(CAST_TARGET, [OBJECT_POS]);
+        vector target_pos = llList2Vector(target_info, 0);
+        string json = llList2Json(JSON_OBJECT, [
+            "uuid", CAST_UUID,
+            "slname", llKey2Name(CAST_UUID),
+            "target", CAST_TARGET,
+            "target_name", llKey2Name(CAST_TARGET),
+            "target_pos", target_pos,
+            "target_distance", llVecDist(pos, target_pos),
+            "spell", CAST_SPELL,
+            "coord", pos,
+            "sim", llGetRegionName(),
+            "version", VERSION,
+            "ap", AP,
+            "nearby", nearby,
+            "nearby_num", NEARBY
+        ]);
+        post("/castspell", json);
     }
 
 }

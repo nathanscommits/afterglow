@@ -7,21 +7,125 @@
     <title>profile</title>
 </head>
 <body>
+    <style>
+        @font-face {
+  font-family:"TypewriterRegular";
+  src: url("/TypewriterRegular.ttf") format("truetype");
+        }
+  body{
+    font-family: TypewriterRegular;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    background-image: url('/img/wood-desk.jfif');
+    background-size:  100% 100%;
+  }
+  .cert-container{
+      background-image: url('https://cdn.discordapp.com/attachments/749926614451880017/918837195173933106/AFTERGLOW_Death_Cert.png');
+      background-size:  contain;
+      background-repeat: no-repeat;
+      height: 700px;
+      width: 850px;
+      padding-left: 160px;
+      padding-right: 150px;
+      padding-top: 150px;
+      position: relative;
+      
+      /* box-shadow:
+  2.8px 2.8px 2.2px rgba(0, 0, 0, 0.07),
+  6.7px 6.7px 5.3px rgba(0, 0, 0, 0.05),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.042),
+  22.3px 22.3px 17.9px rgba(0, 0, 0, 0.035),
+  41.8px 41.8px 33.4px rgba(0, 0, 0, 0.028),
+  100px 100px 80px rgba(0, 0, 0, 0.02)
+; */
+  }
+  .image-container{
+      width: 26%;
+      /* width: 19vw; */
+      height: 42%;
+      float: left;
+      background-color: wheat;
+      /* background-image: url('/img/paper-worn.jpg'); */
+      /* background-size: cover; */
+      /* border-radius: 5%; */
+      /* box-shadow:
+  2.8px 2.8px 2.2px rgba(0, 0, 0, 0.07),
+  6.7px 6.7px 5.3px rgba(0, 0, 0, 0.05),
+  12.5px 12.5px 10px rgba(0, 0, 0, 0.042)
+; */
+transform: rotate(-2deg);
+  }
+  .info-container{
+      float: right;
+      width: 74%;
+      /* background-color: tomato; */
+      /* width: 54vw; */
+      height: 42%;
+      /* background-color: rgba(141, 71, 255, 0.322); */
+  }
+  .info-box{
+    width: 49%;
+    height: 23%;
+    display: inline-block;
+    text-align: center;
+    /* background-color: rgba(255, 99, 71, 0.404); */
+  }
+
+  .info-box p {
+      text-align: center;
+      width: 100%;
+  }
+  .top-pad{
+    width: 100%;
+    height: 34%;
+  }
+  .other-info{
+      position: absolute;
+      top: 58%;
+
+  }
+  #file-num{
+    position: absolute;
+      bottom: 19.5%;
+      left: 20%;
+  }
+  .image-container img{
+      height: 75%;
+      width: 90%;
+      display: block;
+      margin: auto;
+      margin-top: 6%;
+      border-radius: 5%;
+      filter: sepia(100%);
+  }
+    </style>
     <!-- Profile: <br>
     <%= JSON.stringify(user) %>
     <br><br><br> -->
     <div class="container">
-        DATE FILED: <%= user.joined %><br>
-        FILE NUMBER: <%= user._id %><br>
-        DECEDENT NAME: <%= user.name.toUpperCase() %><br>
-        APPARITION CLASS: <%= user.race.toUpperCase() %><br>
-        DATE OF BIRTH: <%= user.dob %><br>
-        DATE OF DEATH: <%= user.dod %><br>
-        CAUSE OF DEATH: <%= user.cod.toUpperCase() %><br><br>
-        THIS IS A TRUE CERTIFICATION OF NAME AND DEATH FACTS AS RECORDED BY THE BUREAU OF AFTERLIFE RECORDS, DISTRICT 9853562951413.<br>
-        J. EDGAR HOOVER<br>
-        DIRECTOR<br>
-
+        <div class="cert-container">
+            <div class="image-container"><img src="https://my-secondlife-agni.akamaized.net/users/<%= user.slname.replace(" Resident" , "").replace(" ", ".").toLowerCase() %>/thumb_sl_image.png" alt=""></div>
+            <div class="info-container">
+                <div class="top-pad"></div>
+                <div class="info-box" id="name"><%= user.name.toUpperCase() %></div>
+                <div class="info-box" id="class"><%= user.race.toUpperCase() %></div>
+                <div class="info-box" id="dob">N/A<%= user.dob %></div>
+                <div class="info-box" id="pob">N/A</div>
+                <div class="info-box" id="dod"><%= user.dod %></div>
+                <div class="info-box" id="cod"><%= user.cod.toUpperCase() %></div>
+            </div>
+            <div class="other-info">
+                DATE FILED: N/A<%= user.joined %><br>
+                ALIAS: <%= user.slname.replace(" Resident" , "").toUpperCase() %><br>
+                LEVEL: <%= user.level %> <br>
+                RESPAWNS: <%= user.deaths.players %>
+            </div>
+            <div id="file-num"><%= user._id %></div>
+        </div>
+        
     </div>
 </body>
 </html>

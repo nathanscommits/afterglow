@@ -17,6 +17,10 @@
         <br>
         Casting animation: <input type="text" name="cast_animation" id=""><br>
         Hit animation: <input value="AD_Front_Impact_13" type="text" name="hit_animation" id=""><br>
+        Summon item: <input value="" type="text" name="summon_item" id=""><br>
+        Summon time: <input value="" type="text" name="summon_time" id=""><br>
+        Summon range: <input value="" type="text" name="summon_range" id=""><br>
+        Summon dot: <input value="" type="text" name="summon_dot" id=""><br>
        
         <br>
         type: <select name="type" id=""  value="attack">
@@ -33,19 +37,35 @@
             <option value="single">single</option>
             <option value="other">other</option>
             <option value="aoe">aoe</option>
+            <option value="summon">summon</option>
         </select><br>
         effect: <select name="effect" id=""  value="none">
             <option value="none">none</option>
             <option value="speed">speed</option>
+            <option value="dispell">dispell</option>
             <option value="slow">slow</option>
             <option value="silence">silence</option>
+            <option value="first_blood">first_blood</option>
+            <option value="execute">execute</option>
+            <option value="invisible">invisible</option>
+            <option value="dodge">dodge</option>
+            <option value="death_wish">death_wish</option>
+            <option value="rabid">rabid</option>
+            <option value="taunt">taunt</option>
+            <option value="bone_shield">bone_shield</option>
+            <option value="sticky_fingers">sticky_fingers</option>
+            <option value="shared_suffering">shared_suffering</option>
+            <option value="hysteria">hysteria</option>
         </select><br>
         <br>
         damage: <input value="0" type="text" name="damage" id="" ><br>
+        self damage: <input value="0" type="text" name="cdamage" id="" ><br>
         cost: <input value="0" type="text" name="cost" id="" ><br>
+        ap damage: <input value="0" type="text" name="tcost" id="" ><br>
         crit: <input value="0" type="text" name="crit" id="" ><br>
-        duration: (time per timer) <input value="0" type="number" name="duration" id="" ><br>
+        duration: (time per timer or duration of AOE attacks) <input value="0" type="number" name="duration" id="" ><br>
         ticks: (times that timer starts again for DOTS/HOTS) <input value="0" type="number" name="ticks" id="" ><br>
+        AOE FREQ: (time between each attack) <input value="0" type="number" name="freq" id="" ><br>
         range: <input value="0" type="text" name="range" id="" ><br>
         cooldown: <input value="0" type="text" name="cooldown" id="" ><br>
         <br>

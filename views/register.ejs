@@ -14,13 +14,14 @@
         date of birth: <input type="date" name="dob" id="" required><br>
         date of death: <input type="date" name="dod" id="" required><br>
         cause of death: <input type="text" name="cod" id="" required><br>
-        race: <select name="race" id="" required>
+        Place of Birth: <input type="text" name="pob" id="" required><br>
+        class: <select name="race" id="" required>
             <option value="phantom">phantom</option>
             <option value="demon">demon</option>
             <option value="cryptid">cryptid</option>
           </select><br>
 
-        Do you accept to be treated however we like and do everything we say forever and get banned at any point and maybe robbed too? <br><input type="checkbox" name="tos" id="" required> yes<br>
+        Do you accept our terms? <br><input type="checkbox" name="tos" id="" required> yes<br>
         <input type="text" name="uuid" id="" value="<%= uuid %>" hidden required>
         <input type="text" name="joined" id="" value="<%- new Date() %>" hidden required>
         <input type="text" name="slname" id="" value="<%= slname %>" hidden required>

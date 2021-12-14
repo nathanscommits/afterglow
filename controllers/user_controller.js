@@ -77,7 +77,6 @@ exports.registerUser = (req, res) => {
         bank: [],
         bone_bank: 0,
         trade_log: [],
-        skills: {},
         effects: [],
         stat_buffs: {
             cost: 1,
@@ -88,11 +87,25 @@ exports.registerUser = (req, res) => {
             cooldown: 1,
             ecto_max: 1,
             ap_max: 1,
-            impulse: 1
+            impulse: 1,
+            resistance: 1,
+            reflected: 1,
         },
-        cooldown: 0,
-        target: 'none',
-        silenced: false,
+        combat: {
+            cooldown: {
+                1: 0, 
+                2: 0, 
+                3: 0, 
+                4: 0, 
+                5: 0
+            },
+            target: 'none',
+            silenced: false,
+            taunt_target: '',
+            damage_split_target: '',
+            assault_time: new Date(),
+            cheat_death_time: new Date(),
+        },
     }
     USERS.insertOne(user);
     res.send(user);

@@ -1,9 +1,10 @@
 TABS on booklet/folder UI
 : sim news/leaderboards/newspaper
-: profile/journal/inventory/player statistics
-: combat/spells
+: profile/journal/player statistics
+: inventory
 : missions info/public directory/map
 : help/guides
+: combat/spells
 
 Skill bar
 : 5 spell slots (4 spells 1 potion) with cooldown info
@@ -20,3 +21,15 @@ test heavy server load
 fix that impulse getting stuck or going negative bug
 add in spells--------
 cooldowns----------
+
+
+add to skills data
+- time since attacking someone
+- time since memento mori triggered
+
+-send number of nearby avatars with spell triggers
+
+shopping list
+roach killer
+80% chocolate
+tropical and blood orange tea

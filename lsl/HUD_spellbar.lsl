@@ -23,7 +23,7 @@ refresh_url(string url) {
          PRIM_MEDIA_AUTO_LOOP, TRUE,
          PRIM_MEDIA_AUTO_ZOOM, TRUE,          
          PRIM_MEDIA_AUTO_PLAY, TRUE,        
-         PRIM_MEDIA_PERMS_CONTROL, PRIM_MEDIA_PERM_NONE,        
+         PRIM_MEDIA_PERMS_CONTROL, PRIM_MEDIA_PERM_ANYONE,        
          PRIM_MEDIA_WIDTH_PIXELS, 1024,         
          PRIM_MEDIA_HEIGHT_PIXELS, 1024 
         ]);
@@ -35,12 +35,22 @@ default
     {
         URL = URL + "/?uuid=" + (string)llGetOwner();
         refresh_url(URL);
+        // llSetTimerEvent(600);
     }
     
     on_rez( integer start_param)
     {
-         URL = URL + "/?uuid=" + (string)llGetOwner();
-        refresh_url(URL);
+        llResetScript();
+    }
+
+    timer()
+    {
+        refresh_url(URL + "&time=" + (string)llGetTime());
+    }
+
+    touch_end( integer num_detected )
+    {
+        refresh_url(URL + "&time=" + (string)llGetTime());
     }
     changed( integer change )
     {
