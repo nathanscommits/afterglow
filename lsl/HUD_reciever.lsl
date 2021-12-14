@@ -310,7 +310,7 @@ default{
             "sim", llGetRegionName(),
             "version", VERSION,
             "ap", AP,
-            "nearby", llList2Json(JSON_ARRAY, nearby),
+            // "nearby", llList2Json(JSON_ARRAY, nearby),
             "nearby_num", NEARBY
         ]);
         post("/castspell", json);

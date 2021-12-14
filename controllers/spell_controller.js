@@ -476,7 +476,7 @@ var execute_spell = (req, res, spell_data, caster, target) => {
         });
     }
 }
-exports.processSpell = async(req, res) => {
+var processSpell = async(req, res) => {
     //grab data
     let caster = await USERS.findOne({uuid: req.body.uuid})
     let spell_info
