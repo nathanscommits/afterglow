@@ -494,14 +494,19 @@ var processSpell = async(req, res) => {
 
     let target = await USERS.findOne({uuid: req.body.target})
     //check requirements
+    console.log(`Pre cast ecto = ${target.ecto}`)
     check_requirements(req, res, spell_data, caster, target)
+    console.log(`post req ecto = ${target.ecto}`)
     //add/remove spell effects
     SpellEffects(caster, target, spell_data)
+    console.log(`post effect ecto = ${target.ecto}`)
     //pass through casters buffs
     //pass in casters spell level buff
     casters_buffs(req, res, spell_data, caster)
+    console.log(`post cbuff ecto = ${target.ecto}`)
     //add buffs/debuffs to target stats, pass through target resistances
     targets_buffs(req, res, spell_data, caster, target)
+    console.log(`post tbuff ecto = ${target.ecto}`)
     
     //execute, save data
     //start cooldown
@@ -514,6 +519,8 @@ var processSpell = async(req, res) => {
     } else {
         execute_spell(req, res, spell_data, caster, target)
     }
+
+    console.log(`post execute ecto = ${target.ecto}`)
 
     res.send("cast complete")
 }
