@@ -92,7 +92,7 @@ exports.spellBar = async (req, res) => {
   
 exports.castSpell = async (req, res) => {
 try{
-    console.log(req.body)
+    // console.log(req.body)
     processSpell(req, res)
     // let caster = await USERS.findOne({uuid: req.body.uuid});
     // if (caster.combat.silenced || caster.combat.cooldown > 0) res.send("You can't cast that yet")
@@ -393,27 +393,22 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     if(caster.uuid == target.uuid) caster.ap = target.ap;
 
     //deduct ecto
-    console.log(`right before ecto deduction = ${target.ecto}
-    spell damage: ${spell_data.damage}
-    spell cdamage: ${spell_data.cdamage}
-    `)
     target.ecto -= spell_data.damage
-    console.log(`right after ecto deduction = ${target.ecto}`)
     if(caster.uuid == target.uuid) caster.ecto = target.ecto;
     caster.ecto -= spell_data.cdamage
     if(caster.uuid == target.uuid) target.ecto = caster.ecto;
 
-    // if(target.combat.damage_split_target != '' && target.uuid != caster.uuid) {
-    //     if(spell_data.damage)split_damage(caster, target, spell_data.damage)
-    //     if(spell_data.cdamage) split_damage(target, caster, spell_data.cdamage)
-    // }
+    if(target.combat.damage_split_target != '' && target.uuid != caster.uuid) {
+        if(spell_data.damage)split_damage(caster, target, spell_data.damage)
+        if(spell_data.cdamage) split_damage(target, caster, spell_data.cdamage)
+    }
 
-    // if(caster.effects.includes("serenity")) {
-    //     caster.effects = caster.effects.filter(item => {
-    //         return item !== "serenity"
-    //     })
-    //     caster.assault_time = new Date(); //should this be outside of this effects scope?
-    // }
+    if(caster.effects.includes("serenity")) {
+        caster.effects = caster.effects.filter(item => {
+            return item !== "serenity"
+        })
+        caster.assault_time = new Date(); //should this be outside of this effects scope?
+    }
 
     // check min max's on ecto and pk
     let caster_max_ecto = caster.ecto_max * spell_data.ecto_max;
@@ -426,7 +421,6 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     else if(target.ap > target.ap_max) target.ap = target.ap_max
     if(target.ecto < 0) target.ecto = 0;
     else if(target.ecto > target_max_ecto) target.ecto = target_max_ecto
-    console.log(`right after max ecto calc = ${target.ecto} max ecto = ${target_max_ecto}`)
     //update hud sockets
     update(req, target)
     update(req, caster)
@@ -469,10 +463,10 @@ var execute_spell = (req, res, spell_data, caster, target) => {
         });
         if(parseFloat(spell_data.duration) > 0)setTimeout(execute_spell(req, res, spell_data, caster, target), parseFloat(spell_data.duration) * 1000);
     } else {
-        // if(target.effects.includes("shared_suffering")) {
-        //     target.combat.damage_split_target = ''
-        //     //will this work?
-        // }
+        if(target.effects.includes("shared_suffering")) {
+            target.combat.damage_split_target = ''
+            //will this work?
+        }
         target.effects = target.effects.filter(item => !spell_data.effects.includes(item))
         if(spell_data.stat_buffs.power != NaN) target.stat_buffs.power /= spell_data.stat_buffs.power
         if(spell_data.stat_buffs.crit != NaN) target.stat_buffs.crit /= spell_data.stat_buffs.crit
@@ -501,18 +495,18 @@ var execute_spell = (req, res, spell_data, caster, target) => {
 var processSpell = async(req, res) => {
     //grab data
     let caster = await USERS.findOne({uuid: req.body.uuid})
+    
+    if(caster.combat.cooldown[req.body.spell] > 0) {
+        res.send("Skill is on cooldown")
+        return;
+    } else {
+        
     let spell_info
     for(const key in caster.skills) {
         const assigned = caster.skills[key]['assigned'];
         if(assigned == req.body.spell) spell_info = caster.skills[key];
     }
     let spell_data = await SPELLS.findOne({name: spell_info.name})
-
-    if(caster.combat.cooldown[req.body.spell] > 0) {
-        res.send("Skill is on cooldown")
-        return;
-    }
-    
     //if AOE, filter list of avatars in range and loop next steps over each avatar (need custom requirements check)
 
     let target = await USERS.findOne({uuid: req.body.target})
@@ -539,6 +533,7 @@ var processSpell = async(req, res) => {
     }
 
     res.send("cast complete")
+    }
 }
 
 // let preSpell = async (caster, target, spell_data) =>{
