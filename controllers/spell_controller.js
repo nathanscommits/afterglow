@@ -498,6 +498,8 @@ var processSpell = async(req, res) => {
         if(assigned == req.body.spell) spell_info = caster.skills[key];
     }
     let spell_data = await SPELLS.findOne({name: spell_info.name})
+
+    if(caster.combat.cooldown[req.body.spell] > 0) res.send("Skill is on cooldown")
     
     //if AOE, filter list of avatars in range and loop next steps over each avatar (need custom requirements check)
 
