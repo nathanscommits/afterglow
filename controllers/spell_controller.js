@@ -531,7 +531,7 @@ var processSpell = async(req, res) => {
 
     console.log(`post execute ecto = ${target.ecto}`)
 
-    res.send("cast complete")
+    //res.send("cast complete")
 }
 
 // let preSpell = async (caster, target, spell_data) =>{
