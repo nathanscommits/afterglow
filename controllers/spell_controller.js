@@ -261,22 +261,29 @@ var check_requirements = (req, res, spell_data, caster, target) => {
     if(caster.ap < (spell_data.cost *= caster.stat_buffs.cost)) {
         //not enough PK
         res.send("Not enough PK for that spell.")
+        return;
     } else if (caster.combat.silenced || caster.combat.cooldown[req.body.spell] > 0){
          res.send("You can't cast that yet")
+         return;
     } else if(req.body.target_distance > spell_data.range) {
         //out of range
         res.send("Target out of range.")
+        return;
     } else if(caster.effects.includes('silence')) {
         res.send("You are silenced and cannot cast spells.")
+        return;
     }else if(target.effects.includes('invisible')) {
         res.send("Your target is invisible.")
+        return;
     }else if(caster.effects.includes('dodge')) {
         //roll a chance to miss
     }else if(spell_data.effects.includes("rabid") && spell_data.damage <= 0) {
         res.send('You can only cast damage spells while you are rabid!')
+        return;
     }else if(caster.effects.includes('taunt') && target.uuid != caster.combat.taunt_target) {
         //cant target non taunt target while taunted!
         res.send("You are being taunted, you can only cast spells at your taunter.")
+        return;
     } else if(spell_data.scope == "summon") {
         res.send({
             summon: {
@@ -286,6 +293,7 @@ var check_requirements = (req, res, spell_data, caster, target) => {
                 summon_dot: spell_data.summon_dot
             }
         })
+        return;
     } else if(spell_data.scope == "aoe") {
         res.send({
             aoe_attack: {
@@ -295,6 +303,7 @@ var check_requirements = (req, res, spell_data, caster, target) => {
                 range: spell_data.range
             }
         })
+        return;
     } 
 }
 let SpellEffects = (caster, target, spell_data) =>{
@@ -499,25 +508,23 @@ var processSpell = async(req, res) => {
     }
     let spell_data = await SPELLS.findOne({name: spell_info.name})
 
-    if(caster.combat.cooldown[req.body.spell] > 0) res.send("Skill is on cooldown")
+    if(caster.combat.cooldown[req.body.spell] > 0) {
+        res.send("Skill is on cooldown")
+        return;
+    }
     
     //if AOE, filter list of avatars in range and loop next steps over each avatar (need custom requirements check)
 
     let target = await USERS.findOne({uuid: req.body.target})
     //check requirements
-    console.log(`Pre cast ecto = ${target.ecto}`)
     check_requirements(req, res, spell_data, caster, target)
-    console.log(`post req ecto = ${target.ecto}`)
     //add/remove spell effects
     SpellEffects(caster, target, spell_data)
-    console.log(`post effect ecto = ${target.ecto}`)
     //pass through casters buffs
     //pass in casters spell level buff
     casters_buffs(req, res, spell_data, caster)
-    console.log(`post cbuff ecto = ${target.ecto}`)
     //add buffs/debuffs to target stats, pass through target resistances
     targets_buffs(req, res, spell_data, caster, target)
-    console.log(`post tbuff ecto = ${target.ecto}`)
     
     //execute, save data
     //start cooldown
@@ -531,9 +538,7 @@ var processSpell = async(req, res) => {
         execute_spell(req, res, spell_data, caster, target)
     }
 
-    console.log(`post execute ecto = ${target.ecto}`)
-
-    //res.send("cast complete")
+    res.send("cast complete")
 }
 
 // let preSpell = async (caster, target, spell_data) =>{
