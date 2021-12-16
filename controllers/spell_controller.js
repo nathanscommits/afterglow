@@ -61,25 +61,25 @@ exports.targetUpdate = async (req, res) => {
 }
 let cooldown = async (req, person, cooldown_time, spell_num) => {
     //run a timeout function ever 1 second and check if cooldown has ended
-    var new_cooldown = {}
-        new_cooldown["combat.cooldown" + spell_num] = cooldown_time 
+    let user = await USERS.findOne({uuid: person.uuid})
+    user.combat.cooldown[spell_num] = cooldown_time
     let cooling = async () => {
-        let user = await USERS.findOne({uuid: person.uuid})
+        user = await USERS.findOne({uuid: person.uuid})
         if(user.combat.cooldown[spell_num] > 0) {
             // user.combat.cooldown[spell_num] -= 1;
-            new_cooldown["combat.cooldown" + spell_num] -= 1;
-            await USERS.updateOne({uuid: user.uuid}, {$set: new_cooldown})
+            user.combat.cooldown[spell_num] -= 1;
+            await USERS.updateOne({uuid: user.uuid}, {$set: {combat: user.combat}})
             setTimeout(cooling, 1000);
         } else {
-            new_cooldown["combat.cooldown" + spell_num] = 0;
-            await USERS.updateOne({uuid: user.uuid}, {$set: new_cooldown})
+            user.combat.cooldown[spell_num] = 0;
+            await USERS.updateOne({uuid: user.uuid}, {$set: {combat: user.combat}})
             //update(req, user) //might not need this here
         }
         update(req, user)
     }
     // let user = await USERS.findOne({uuid: person})
     // user.combat.cooldown += cooldown_time;
-    await USERS.updateOne({uuid: person.uuid}, {$set: new_cooldown})
+    await USERS.updateOne({uuid: person.uuid}, {$set: {combat: user.combat}})
     update(req, person)
     setTimeout(cooling, 1000);
 }
@@ -381,22 +381,24 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     if(caster.uuid == target.uuid) caster.ap = target.ap;
 
     //deduct ecto
+    console.log(`right before ecto deduction = ${target.ecto}`)
     target.ecto -= spell_data.damage
     if(caster.uuid == target.uuid) caster.ecto = target.ecto;
     caster.ecto -= spell_data.cdamage
     if(caster.uuid == target.uuid) target.ecto = caster.ecto;
+    console.log(`right after ecto deduction = ${target.ecto}`)
 
-    if(target.combat.damage_split_target != '' && target.uuid != caster.uuid) {
-        if(spell_data.damage)split_damage(caster, target, spell_data.damage)
-        if(spell_data.cdamage) split_damage(target, caster, spell_data.cdamage)
-    }
+    // if(target.combat.damage_split_target != '' && target.uuid != caster.uuid) {
+    //     if(spell_data.damage)split_damage(caster, target, spell_data.damage)
+    //     if(spell_data.cdamage) split_damage(target, caster, spell_data.cdamage)
+    // }
 
-    if(caster.effects.includes("serenity")) {
-        caster.effects = caster.effects.filter(item => {
-            return item !== "serenity"
-        })
-        caster.assault_time = new Date(); //should this be outside of this effects scope?
-    }
+    // if(caster.effects.includes("serenity")) {
+    //     caster.effects = caster.effects.filter(item => {
+    //         return item !== "serenity"
+    //     })
+    //     caster.assault_time = new Date(); //should this be outside of this effects scope?
+    // }
 
     // check min max's on ecto and pk
     let caster_max_ecto = caster.ecto_max * spell_data.ecto_max;
@@ -409,11 +411,12 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     else if(target.ap > target.ap_max) target.ap = target.ap_max
     if(target.ecto < 0) target.ecto = 0;
     else if(target.ecto > target_max_ecto) target.ecto = target_max_ecto
+    console.log(`right after max ecto calc = ${target.ecto} max ecto = ${target_max_ecto}`)
     //update hud sockets
     update(req, target)
     update(req, caster)
     //save changes
-    USERS.updateOne({uuid: caster.uuid}, {$set: caster}, { upsert: true }) //dont think these need to be async
+    USERS.updateOne({uuid: caster.uuid}, {$set: {ecto: caster.ecto, ap: caster.ap, effects: caster.effects, stat_buffs: caster.stat_buffs, ecto_max: caster.ecto_max, ap_max: caster.ap_max}}, { upsert: true }) //dont think these need to be async
     USERS.updateOne({uuid: target.uuid}, {$set: {ecto: target.ecto, ap: target.ap, effects: target.effects, stat_buffs: target.stat_buffs, ecto_max: target.ecto_max, ap_max: target.ap_max}}, { upsert: true }) //dont think these need to be async
     //post updates to SL
     let spell_props = {};
@@ -451,10 +454,10 @@ var execute_spell = (req, res, spell_data, caster, target) => {
         });
         if(parseFloat(spell_data.duration) > 0)setTimeout(execute_spell(req, res, spell_data, caster, target), parseFloat(spell_data.duration) * 1000);
     } else {
-        if(target.effects.includes("shared_suffering")) {
-            target.combat.damage_split_target = ''
-            //will this work?
-        }
+        // if(target.effects.includes("shared_suffering")) {
+        //     target.combat.damage_split_target = ''
+        //     //will this work?
+        // }
         target.effects = target.effects.filter(item => !spell_data.effects.includes(item))
         if(spell_data.stat_buffs.power != NaN) target.stat_buffs.power /= spell_data.stat_buffs.power
         if(spell_data.stat_buffs.crit != NaN) target.stat_buffs.crit /= spell_data.stat_buffs.crit
