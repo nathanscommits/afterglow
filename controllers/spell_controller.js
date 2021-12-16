@@ -196,8 +196,11 @@ try{
         ticks: parseFloat(req.body.ticks),
         range: parseFloat(req.body.range),
         damage: parseFloat(req.body.damage),
+        cdamage: parseFloat(req.body.cdamage),
         crit: parseFloat(req.body.crit),
         cost: parseFloat(req.body.cost),
+        tcost: parseFloat(req.body.tcost),
+        freq: parseFloat(req.body.freq),
         cooldown: parseFloat(req.body.cooldown),
         stat_buffs: {
             power: parseFloat(req.body.buff_power),
@@ -210,7 +213,7 @@ try{
             ap_max: parseFloat(req.body.buff_ap_max),
             impulse: parseFloat(req.body.buff_impulse),
             resistance: parseFloat(req.body.buff_resistance),
-            reflected: parseFloat(req.body.buff_reflected)
+            reflected: parseFloat(req.body.buff_reflected),
         },
         effects: [req.body.effect],
         cast_animation: req.body.cast_animation,
@@ -381,12 +384,15 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     if(caster.uuid == target.uuid) caster.ap = target.ap;
 
     //deduct ecto
-    console.log(`right before ecto deduction = ${target.ecto}`)
+    console.log(`right before ecto deduction = ${target.ecto}
+    spell damage: ${spell_data.damage}
+    spell cdamage: ${spell_data.cdamage}
+    `)
     target.ecto -= spell_data.damage
+    console.log(`right after ecto deduction = ${target.ecto}`)
     if(caster.uuid == target.uuid) caster.ecto = target.ecto;
     caster.ecto -= spell_data.cdamage
     if(caster.uuid == target.uuid) target.ecto = caster.ecto;
-    console.log(`right after ecto deduction = ${target.ecto}`)
 
     // if(target.combat.damage_split_target != '' && target.uuid != caster.uuid) {
     //     if(spell_data.damage)split_damage(caster, target, spell_data.damage)
