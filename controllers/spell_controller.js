@@ -15,7 +15,6 @@ let death = async (user, req) => {
     if(user.race == "phantom" && user.combat.cheat_death_time < new Date()){ // SUBTRACT THE HOURS OFF OF THIS!!
         cheat_death_time = new Date();
         user.ecto = user.ecto_max * 0.5; // 50% of max ecto
-        return;
     } else {
         //drop loot
         //teleport user to kharons office
@@ -25,7 +24,7 @@ let death = async (user, req) => {
 
     }
 }
-exports.aoeSpell = async (req, res, spell_data, caster)=> {
+let aoeSpell = async (req, res, spell_data, caster)=> {
     cooldown(req, caster, spell_data.cooldown, req.body.spell) 
     casters_buffs(req, res, spell_data, caster)
     //calculate spell effects scaling
@@ -103,87 +102,87 @@ exports.spellBar = async (req, res) => {
     else res.send("no user")
 }
   
-exports.castSpell = async (req, res) => {
-try{
-    // console.log(req.body)
-    processSpell(req, res)
-    // let caster = await USERS.findOne({uuid: req.body.uuid});
-    // if (caster.combat.silenced || caster.combat.cooldown > 0) res.send("You can't cast that yet")
-    // let target;
-    // if(req.body.uuid != req.body.target || req.body.target != "") {
-    //     target = await USERS.findOne({uuid: req.body.target});
-    // } else {
-    //     target = caster;
-    //     target.ap = req.body.ap;
-    // }
+// exports.castSpell = async (req, res) => {
+// try{
+//     // console.log(req.body)
+//     processSpell(req, res)
+//     // let caster = await USERS.findOne({uuid: req.body.uuid});
+//     // if (caster.combat.silenced || caster.combat.cooldown > 0) res.send("You can't cast that yet")
+//     // let target;
+//     // if(req.body.uuid != req.body.target || req.body.target != "") {
+//     //     target = await USERS.findOne({uuid: req.body.target});
+//     // } else {
+//     //     target = caster;
+//     //     target.ap = req.body.ap;
+//     // }
 
-    // let spell_info
-    // for(const key in caster.skills) {
-    //     const assigned = caster.skills[key]['assigned'];
-    //     if(assigned == req.body.spell) spell_info = caster.skills[key];
-    // }
-    // if(!spell_info){
-    //     res.send("No spell found")
-    //     console.log("No spell found")
-    // }
-    // console.log(spell_info);
-    // const spell_data = await SPELLS.findOne({name: spell_info.name}); //damage, crit, range, duration, cost, cooldown, effects, name
+//     // let spell_info
+//     // for(const key in caster.skills) {
+//     //     const assigned = caster.skills[key]['assigned'];
+//     //     if(assigned == req.body.spell) spell_info = caster.skills[key];
+//     // }
+//     // if(!spell_info){
+//     //     res.send("No spell found")
+//     //     console.log("No spell found")
+//     // }
+//     // console.log(spell_info);
+//     // const spell_data = await SPELLS.findOne({name: spell_info.name}); //damage, crit, range, duration, cost, cooldown, effects, name
     
-    // caster.ap = req.body.ap;
+//     // caster.ap = req.body.ap;
     
-    // if(caster.ap > caster.ap_max) caster.ap = cast.ap_max;
-    // else if(caster.ap < 0) caster.ap = 0;
+//     // if(caster.ap > caster.ap_max) caster.ap = cast.ap_max;
+//     // else if(caster.ap < 0) caster.ap = 0;
    
-    // //check AP cos
-    // spell_data.cost *= caster.stat_buffs.cost;
-    // if(caster.ap < spell_data.cost) {
-    //     //not enough PK
-    //     res.send("Not enough resource for that.")
-    // } else if(req.body.target_distance > spell_data.range) {
-    //     //out of range
-    //     res.send("Target out of range.")
-    // } else if(caster.effects.includes('silence')) {
-    //     res.send("You are silenced and cannot cast spells.")
-    // }else if(target.effects.includes('invisible')) {
-    //     res.send("Your target is invisible.")
-    // }else if(caster.effects.includes('dodge')) {
-    //     //roll a chance to miss
-    // }else if(spell_data.effects.includes("rabid") && spell_data.damage <= 0) {
-    //     res.send('You can only cast damage spells while you are rabid!')
-    // }else if(caster.effects.includes('taunt') && target.uuid != caster.combat.taunt_target) {
-    //     //cant target non taunt target while taunted!
-    //     res.send("You are being taunted, you can only cast spells at your taunter.")
-    // } else if(spell_data.scope == "summon") {
-    //     let spell_props = {};
-    //     if(spell_data.summon_item != undefined) spell_props.summon_item = spell_data.summon_item
-    //     if(spell_data.summon_time != undefined) spell_props.summon_time = spell_data.summon_time
-    //     if(spell_data.summon_range != undefined) spell_props.summon_range = spell_data.summon_range
-    //     if(spell_data.summon_dot != undefined) spell_props.summon_dot = spell_data.summon_dot
-    //     res.send(spell_props)
-    // } else if(spell_data.scope == "aoe") {
-    //     res.send({
-    //         aoe_attack: {
-    //             damage: spell_data.damage,
-    //             duration: spell_data.duration,
-    //             freq: spell_data.ticks,
-    //             range: spell_data.range
-    //         }
-    //     })
-    // } else {
-    //     // WE GOOD! CAST THE SPELL!
+//     // //check AP cos
+//     // spell_data.cost *= caster.stat_buffs.cost;
+//     // if(caster.ap < spell_data.cost) {
+//     //     //not enough PK
+//     //     res.send("Not enough resource for that.")
+//     // } else if(req.body.target_distance > spell_data.range) {
+//     //     //out of range
+//     //     res.send("Target out of range.")
+//     // } else if(caster.effects.includes('silence')) {
+//     //     res.send("You are silenced and cannot cast spells.")
+//     // }else if(target.effects.includes('invisible')) {
+//     //     res.send("Your target is invisible.")
+//     // }else if(caster.effects.includes('dodge')) {
+//     //     //roll a chance to miss
+//     // }else if(spell_data.effects.includes("rabid") && spell_data.damage <= 0) {
+//     //     res.send('You can only cast damage spells while you are rabid!')
+//     // }else if(caster.effects.includes('taunt') && target.uuid != caster.combat.taunt_target) {
+//     //     //cant target non taunt target while taunted!
+//     //     res.send("You are being taunted, you can only cast spells at your taunter.")
+//     // } else if(spell_data.scope == "summon") {
+//     //     let spell_props = {};
+//     //     if(spell_data.summon_item != undefined) spell_props.summon_item = spell_data.summon_item
+//     //     if(spell_data.summon_time != undefined) spell_props.summon_time = spell_data.summon_time
+//     //     if(spell_data.summon_range != undefined) spell_props.summon_range = spell_data.summon_range
+//     //     if(spell_data.summon_dot != undefined) spell_props.summon_dot = spell_data.summon_dot
+//     //     res.send(spell_props)
+//     // } else if(spell_data.scope == "aoe") {
+//     //     res.send({
+//     //         aoe_attack: {
+//     //             damage: spell_data.damage,
+//     //             duration: spell_data.duration,
+//     //             freq: spell_data.ticks,
+//     //             range: spell_data.range
+//     //         }
+//     //     })
+//     // } else {
+//     //     // WE GOOD! CAST THE SPELL!
         
-    //     preSpell(caster, target, spell_data);
-    //     SpellEffects(caster, target, spell_data);
-    //     postSpell(req, caster, target, spell_data);
-    //     res.send("Cast complete")
-    // }
+//     //     preSpell(caster, target, spell_data);
+//     //     SpellEffects(caster, target, spell_data);
+//     //     postSpell(req, caster, target, spell_data);
+//     //     res.send("Cast complete")
+//     // }
 
 
 
-}catch(err) {
-    console.log(err)
-}
-}
+// }catch(err) {
+//     console.log(err)
+// }
+// }
 
 let split_damage = async (caster, target, damage) => {
     var split_target
@@ -275,29 +274,29 @@ var check_requirements = (req, res, spell_data, caster, target) => {
     if(caster.ap < (spell_data.cost *= caster.stat_buffs.cost)) {
         //not enough PK
         res.send("Not enough PK for that spell.")
-        return;
+        return false;
     } else if (caster.combat.silenced || caster.combat.cooldown[req.body.spell] > 0){
          res.send("You can't cast that yet")
-         return;
+         return false;
     } else if(req.body.target_distance > spell_data.range) {
         //out of range
         res.send("Target out of range.")
-        return;
+        return false;
     } else if(caster.effects.includes('silence')) {
         res.send("You are silenced and cannot cast spells.")
-        return;
+        return false;
     }else if(target.effects.includes('invisible')) {
         res.send("Your target is invisible.")
-        return;
+        return false;
     }else if(caster.effects.includes('dodge')) {
         //roll a chance to miss
     }else if(spell_data.effects.includes("rabid") && spell_data.damage <= 0) {
         res.send('You can only cast damage spells while you are rabid!')
-        return;
+        return false;
     }else if(caster.effects.includes('taunt') && target.uuid != caster.combat.taunt_target) {
         //cant target non taunt target while taunted!
         res.send("You are being taunted, you can only cast spells at your taunter.")
-        return;
+        return false;
     } else if(spell_data.scope == "summon") {
         res.send({
             summon: {
@@ -307,15 +306,15 @@ var check_requirements = (req, res, spell_data, caster, target) => {
                 summon_dot: spell_data.summon_dot
             }
         })
-        return;
+        return false;
     } else if(spell_data.target == "self" && req.body.uuid != req.body.target) {
         res.send("This spell can only be cast on yourself")
-        return;
+        return false;
     } else if(spell_data.target == "non-self" && req.body.uuid == req.body.target) {
         res.send("This spell can not be cast on yourself")
-        return;
+        return false;
     } else if(spell_data.scope == "aoe") {
-        this.aoeSpell(req, res, spell_data, caster)
+        aoeSpell(req, res, spell_data, caster)
         // res.send({
         //     aoe_attack: {
         //         damage: spell_data.damage,
@@ -324,8 +323,10 @@ var check_requirements = (req, res, spell_data, caster, target) => {
         //         range: spell_data.range
         //     }
         // })
-        return;
-    } 
+        return false;
+    } else {
+        return true;
+    }
 }
 let SpellEffects = (caster, target, spell_data) =>{
     if(spell_data.effects.includes("dispell")){
@@ -517,7 +518,7 @@ var execute_spell = (req, res, spell_data, caster, target) => {
         });
     }
 }
-var processSpell = async(req, res) => {
+exports.castSpell = async(req, res) => { try{
     //grab data
     let caster = await USERS.findOne({uuid: req.body.uuid})
     
@@ -536,7 +537,7 @@ var processSpell = async(req, res) => {
 
     let target = await USERS.findOne({uuid: req.body.target})
     //check requirements
-    check_requirements(req, res, spell_data, caster, target)
+    if(!check_requirements(req, res, spell_data, caster, target)) return
     //add/remove spell effects
     SpellEffects(caster, target, spell_data)
     //pass through casters buffs
@@ -558,7 +559,7 @@ var processSpell = async(req, res) => {
 
     res.send("cast complete")
     }
-}
+}catch(e){console.log(e)}}
 
 
 // let preSpell = async (caster, target, spell_data) =>{

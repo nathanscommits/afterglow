@@ -79,7 +79,7 @@ string PK_MAX;
 string BONE;
 
 PARSE_HTTP(string body) {
-    
+    llOwnerSay(body);
     if(llJsonGetValue(body, ["display"]) != JSON_INVALID) {
         STATS = llJsonGetValue(body, ["display"]);
         list stats = llJson2List(STATS);
@@ -285,7 +285,7 @@ default{
         } else if(n == 6 && id == "agents_in_range") {
             post("/aoe-damage", m);
         } else if(n == 10 && id == "agents") {
-
+            llOwnerSay("Agents ready, posting...");
             NEARBY = llGetListLength(llJson2List(m));
             vector pos = llGetPos();
             list target_info = llGetObjectDetails(CAST_TARGET, [OBJECT_POS]);

@@ -40,21 +40,22 @@ default
         //     llSetTimerEvent(FREQ);
         // } else 
         if(n == 11 && id == "request_agents"){
-            
+            llOwnerSay((string)id);
             list agents = llGetAgentList(AGENT_LIST_REGION, []);
             integer len = llGetListLength(agents);
             vector pos = llGetPos();
             list agents_in_range;
             while(len--) {
                 key agent = llList2Key(agents, len) ;
-                if(agent == llGetOwner()) return;
-                vector agent_pos = llList2Vector( llGetObjectDetails(agent, [OBJECT_POS])  , 0);
-                float dist = llVecDist(pos, agent_pos);
-                if(dist <= 20 ) {
-                    agents_in_range += llList2Json(JSON_OBJECT, ["uuid", agent, "distance", dist]);
+                if(agent != llGetOwner()) {
+                    vector agent_pos = llList2Vector( llGetObjectDetails(agent, [OBJECT_POS])  , 0);
+                    float dist = llVecDist(pos, agent_pos);
+                    if(dist <= 20 ) {
+                        agents_in_range += llList2Json(JSON_OBJECT, ["uuid", agent, "distance", dist]);
+                    }
                 }
             }
-            llMessageLinked(LINK_THIS, 10, llList2Json(JSON_ARRAY, agents_in_range), "agents");
+            llMessageLinked(-1, 10, llList2Json(JSON_ARRAY, agents_in_range), "agents");
         
         }
     }
