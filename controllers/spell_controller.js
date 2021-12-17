@@ -36,6 +36,7 @@ let aoeSpell = async (req, res, spell_data, caster)=> {
         if(av.distance > spell_data.range) return;
         console.log(av)
         let target = await USERS.findOne({uuid: av.uuid})
+        if(!target) return;
         SpellEffects(caster, target, spell_data)
         targets_buffs(req, res, spell_data, caster, target)
         if(parseFloat(spell_data.ticks) > 0 && parseFloat(spell_data.duration) > 0) {
