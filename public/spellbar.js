@@ -2,6 +2,17 @@ const socket = io('ws://afterglowgame.herokuapp.com/');
 
 const uuid = document.getElementById('uuid-data').dataset.test
 let regenning = false;
+let ap_regen;
+var interval_starter = (user) => {
+    clearTimeout(ap_regen)
+    socket.emit('message', `starting timeout!`)
+    ap_regen = setTimeout( () => {
+        user.ap++
+        socket.emit('message', `Regenning PK for ${user.slname}`)
+        socket.emit('ap_update', user)
+    } , 1000);  
+}
+
 socket.on(uuid, (user) => {
     console.log(user)
     document.getElementById('ecto-bar-span').innerHTML = `ECTO ${user.ecto}/${user.ecto_max}`;
@@ -11,19 +22,9 @@ socket.on(uuid, (user) => {
     document.getElementById('pk-bar').style.width = `${ user.ap }%`;
     
     //clearTimeout(ap_regen)
-    let ap_regen;
     if(user.ap < user.ap_max){
-        if(!regenning) {
-            socket.emit('message', `starting interval!`)
-            clearInterval(ap_regen)
-            ap_regen = setInterval( addPk(user) , 1000);
-            regenning = true
-        }
-    }  else {
-        socket.emit('message', `clearing interval!`)
-        clearInterval(ap_regen)
-        regenning = false;
-    }
+       interval_starter(user);
+    }  
 
     document.getElementById('ecto-bar').style.width = `${user.ecto}%`;
     document.getElementById('bones-balance').innerHTML = `₿$ ${user.bone}`;
@@ -43,10 +44,10 @@ socket.on(uuid, (user) => {
         document.getElementById('cooldown-4').innerHTML = ``;
 });
 
-var addPk = (user) => {
-    user.ap++
-    // ap_regen = false;
-    socket.emit('message', `Regenning PK for ${user.slname}`)
-    socket.emit('ap_update', user)
-    // if(user.ap < user.ap_max) setTimeout( addPk(user) , 1000);
-}
+// var addPk = (user) => {
+//     user.ap++
+//     // ap_regen = false;
+//     socket.emit('message', `Regenning PK for ${user.slname}`)
+//     socket.emit('ap_update', user)
+//     // if(user.ap < user.ap_max) setTimeout( addPk(user) , 1000);
+// }
