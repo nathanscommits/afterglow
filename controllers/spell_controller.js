@@ -416,11 +416,11 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     caster.ap -= spell_data.cost; //do we want to deduct it once per spell or once per tick?
     if(caster.uuid == target.uuid) target.ap = caster.ap;
     target.ap -= spell_data.tcost;
-    if(caster.uuid == target.uuid) caster.ap = target.ap;
+    if(caster.uuid == target.uuid  && spell_data.scope != "aoe") caster.ap = target.ap;
 
     //deduct ecto
     target.ecto -= spell_data.damage
-    if(caster.uuid == target.uuid) caster.ecto = target.ecto;
+    if(caster.uuid == target.uuid && spell_data.scope != "aoe") caster.ecto = target.ecto;
     caster.ecto -= spell_data.cdamage
     if(caster.uuid == target.uuid) target.ecto = caster.ecto;
 
