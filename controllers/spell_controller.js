@@ -407,7 +407,7 @@ var targets_buffs = (req, res, spell_data, caster, target) => {
     //add target buffed stats////////////////////////////////////////
     spell_data.damage *= target.stat_buffs.resistance; //convert to %/100%?
     //damage caster = reflected-damage
-    let reflected_damage = (spell_data.damage *= target.stat_buffs.reflected);
+    let reflected_damage = (spell_data.damage *= target.stat_buffs.reflected) - spell_data.damage;
     if(reflected_damage != NaN) caster.ecto -= reflected_damage;
     //check for split damage partner here somewhere!?
     ///////////////////////////////////////////////////////////////
