@@ -5,7 +5,7 @@ let regenning = false;
 let ap_regen;
 var interval_starter = (user) => {
     clearTimeout(ap_regen)
-    // socket.emit('message', `starting timeout!`)
+    socket.emit('message', `starting timeout!`)
     ap_regen = setTimeout( () => {
         if(user.race == "demon"){
             user.ap += user.nearby_num
@@ -15,7 +15,7 @@ var interval_starter = (user) => {
             user.ap = user.ap_max
         }
         user.ap = parseInt(user.ap)
-        // socket.emit('message', `Regenning PK for ${user.slname}`)
+        socket.emit('message', `Regenning PK for ${user.slname}, with ${user.ap} ap and ${user.ap_max} max`)
         socket.emit('ap_update', user)
     } , 2000);  
 }

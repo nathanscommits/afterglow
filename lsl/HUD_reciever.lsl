@@ -69,13 +69,11 @@ cam(list params) {
 }
 
 integer TARGET_CH = -8143425; integer COOLDOWN_BOOL; key TARGET; integer REZ_CHANNEL = -9247974;
-list COLLISION_OBJECTS; list SENSOR_OBJECTS; string STATS; float AP = 100;
+list COLLISION_OBJECTS; list SENSOR_OBJECTS; string STATS; 
 vector LKL; 
 integer HUD_COMS = -235242;
 string ECTO;
 string ECTO_MAX;
-string PK;
-string PK_MAX;
 string BONE;
 
 PARSE_HTTP(string body) {
@@ -85,8 +83,6 @@ PARSE_HTTP(string body) {
         list stats = llJson2List(STATS);
         ECTO = (string)llList2Integer(stats, 0);
         ECTO_MAX = (string)llList2Integer(stats, 1);
-        PK = (string)llList2Integer(stats, 2);
-        PK_MAX = (string)llList2Integer(stats, 3);
         BONE = (string)llList2Integer(stats, 4);
         llMessageLinked(LINK_THIS, 2, llJsonGetValue(body, ["display"]), "display");
         // llRegionSay(HUD_COMS, "/spellbar/"+ECTO+"/"+ECTO_MAX+"/"+PK+"/"+PK_MAX+"/"+llKey2Name(TARGET)+"/"+BONE+"/");
@@ -250,8 +246,7 @@ default{
                     "slname", llKey2Name(llGetOwner()),
                     "coord", llGetPos(),
                     "sim", llGetRegionName(),
-                    "version", VERSION,
-                    "ap", AP
+                    "version", VERSION
                 ]));
             }
             return;
@@ -271,20 +266,7 @@ default{
 
     link_message( integer s, integer n, string m, key id )
     {
-        if(n == 4 && id == "ap_update") {
-            if((float)m == AP) return;
-            AP = (float)m;
-            // PK = (string)((integer)AP);
-            // llRegionSay(HUD_COMS, "/spellbar/"+ECTO+"/"+ECTO_MAX+"/"+PK+"/"+PK_MAX+"/"+llKey2Name(TARGET)+"/"+BONE+"/");
-            post("/ap_update", llList2Json(JSON_OBJECT, [
-                "ap", (string)AP,
-                // "target", (string)TARGET,
-                // "target_name", llKey2Name(TARGET),
-                "uuid", llGetOwner()
-            ]));
-        //} else if(n == 6 && id == "agents_in_range") {
-            //post("/aoe-damage", m);
-        } else if(n == 10 && id == "agents") {
+       if(n == 10 && id == "agents") {
             llOwnerSay("Agents ready, posting...");
             NEARBY = llGetListLength(llJson2List(m));
             vector pos = llGetPos();
@@ -301,7 +283,6 @@ default{
                 "coord", pos,
                 "sim", llGetRegionName(),
                 "version", VERSION,
-                "ap", AP,
                 "nearby", m,
                 "nearby_num", NEARBY
             ]);

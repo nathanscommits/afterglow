@@ -1,7 +1,7 @@
 key urlRequestId;
 string url;
 key HTTP_REQUEST_ID;
-string URL = "https://afterglow.loca.lt";
+string URL = "https://afterglowgame.herokuapp.com";
 // string URL = "https://afterglow2.loca.lt";
 float VERSION = 0.1;
 integer COOLDOWN = FALSE;
