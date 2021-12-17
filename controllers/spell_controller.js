@@ -454,7 +454,7 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     update(req, target)
     update(req, caster)
     //save changes
-    USERS.updateOne({uuid: caster.uuid}, {$set: {ecto: caster.ecto, ap: caster.ap, effects: caster.effects, stat_buffs: caster.stat_buffs, ecto_max: caster.ecto_max, ap_max: caster.ap_max}}, { upsert: true }) //dont think these need to be async
+    USERS.updateOne({uuid: caster.uuid}, {$set: {nearby_num: caster.nearby_num, nearby: caster.nearby, ecto: caster.ecto, ap: caster.ap, effects: caster.effects, stat_buffs: caster.stat_buffs, ecto_max: caster.ecto_max, ap_max: caster.ap_max}}, { upsert: true }) //dont think these need to be async
     USERS.updateOne({uuid: target.uuid}, {$set: {ecto: target.ecto, ap: target.ap, effects: target.effects, stat_buffs: target.stat_buffs, ecto_max: target.ecto_max, ap_max: target.ap_max}}, { upsert: true }) //dont think these need to be async
     //post updates to SL
     let spell_props = {};
@@ -541,6 +541,8 @@ exports.castSpell = async(req, res) => { try{
     let target = await USERS.findOne({uuid: req.body.target})
     //check requirements
     if(!check_requirements(req, res, spell_data, caster, target)) return
+    caster.nearby = req.body.nearby
+    caster.nearby_num = req.body.nearby_num
     //add/remove spell effects
     SpellEffects(caster, target, spell_data)
     //pass through casters buffs
