@@ -1,6 +1,7 @@
 const socket = io('ws://afterglowgame.herokuapp.com/');
 
 const uuid = document.getElementById('uuid-data').dataset.test
+let ap_regen;
 socket.on(uuid, (user) => {
     console.log(user)
     document.getElementById('ecto-bar-span').innerHTML = `ECTO ${user.ecto}/${user.ecto_max}`;
@@ -8,7 +9,10 @@ socket.on(uuid, (user) => {
     user.ap = user.ap / user.ap_max * 100;
     user.ecto = user.ecto / user.ecto_max * 100;
     document.getElementById('pk-bar').style.width = `${ user.ap }%`;
-    if(user.ap < user.ap_max) setTimeout( addPk(user) , 1000);
+
+    //clearTimeout(ap_regen)
+    if(user.ap < user.ap_max && !ap_regen) ap_regen = setTimeout( addPk(user) , 2000);
+
     document.getElementById('ecto-bar').style.width = `${user.ecto}%`;
     document.getElementById('bones-balance').innerHTML = `₿$ ${user.bone}`;
     document.getElementById('target').innerHTML = `Targeting: ${user.combat.target}`;
@@ -29,6 +33,7 @@ socket.on(uuid, (user) => {
 
 var addPk = (user) => {
     user.ap++
+    ap_regen = false;
     socket.emit('ap_update', user)
     // if(user.ap < user.ap_max) setTimeout( addPk(user) , 1000);
 }
