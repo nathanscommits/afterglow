@@ -11,7 +11,7 @@ default{
     state_entry()
     {
         // llSetTimerEvent(2);
-        llSensorRepeat("", "", AGENT, 10, PI, 2);
+        // llSensorRepeat("", "", AGENT, 10, PI, 2);
     }
     link_message( integer s, integer n, string m, key id )
     {

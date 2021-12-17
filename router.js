@@ -34,6 +34,7 @@ router.post("/new_user", userController.newUser)
 router.post("/update_user", userController.updateUser)
 router.post("/update_url", userController.updateUrl)
 router.post("/castspell", spellController.castSpell)
+router.post("/pkregen", postController.pkRegen)
 
 router.post("/addinventory", inventoryController.addInventory)
 router.post("/removeinventory", inventoryController.removeInventory)

@@ -25,18 +25,30 @@ let death = async (user, req) => {
 
     }
 }
-exports.aoeSpell = async (req, res)=> {
+exports.aoeSpell = async (req, res, spell_data, caster)=> {
+    cooldown(req, caster, spell_data.cooldown, req.body.spell) 
+    casters_buffs(req, res, spell_data, caster)
     //calculate spell effects scaling
-    let damage;
+    // let damage = spell_data.damage;
     //loop through every avatar, adding the spell effects
-    let avatars = req.body.avatars
-    let data = await USERS.find({}).toArray()
+    let avatars = req.body.nearby
     avatars.forEach(av => {
-        if(av == req.body.uuid) return;
-        let i = data.indexOf({uuid: av})
-        let ecto = data[i].ecto - damage
-        USERS.updateOne({uuid: av}, {$set: {ecto: ecto}})
+        if(av.uuid == req.body.uuid) return;
+        if(av.distance > spell_data.range) return;
+        let target = await USERS.findOne({uuid: av.uuid})
+        SpellEffects(caster, target, spell_data)
+        targets_buffs(req, res, spell_data, caster, target)
+        if(parseFloat(spell_data.ticks) > 0 && parseFloat(spell_data.duration) > 0) {
+            setTimeout(execute_spell(req, res, spell_data, caster, target), parseFloat(spell_data.duration) * 1000);
+        } else {
+            execute_spell(req, res, spell_data, caster, target)
+        }
+        // let ecto = target.ecto - damage
+        // USERS.updateOne({uuid: av.uuid}, {$set: {ecto: ecto}})
     });
+
+
+    
     res.send("AOE cast complete")
 }
 exports.summonSpell = async (req, res)=> {
@@ -192,6 +204,7 @@ try{
         image: req.body.image,
         type: req.body.type,
         scope: req.body.scope,
+        target: req.body.target,
         duration: parseFloat(req.body.duration),
         ticks: parseFloat(req.body.ticks),
         range: parseFloat(req.body.range),
@@ -294,15 +307,22 @@ var check_requirements = (req, res, spell_data, caster, target) => {
             }
         })
         return;
+    } else if(spell_data.target == "self" && req.body.uuid != req.body.target) {
+        res.send("This spell can only be cast on yourself")
+        return;
+    } else if(spell_data.target == "non-self" && req.body.uuid == req.body.target) {
+        res.send("This spell can not be cast on yourself")
+        return;
     } else if(spell_data.scope == "aoe") {
-        res.send({
-            aoe_attack: {
-                damage: spell_data.damage,
-                duration: spell_data.duration,
-                freq: spell_data.ticks,
-                range: spell_data.range
-            }
-        })
+        this.aoeSpell(req, res, spell_data, caster)
+        // res.send({
+        //     aoe_attack: {
+        //         damage: spell_data.damage,
+        //         duration: spell_data.duration,
+        //         freq: spell_data.ticks,
+        //         range: spell_data.range
+        //     }
+        // })
         return;
     } 
 }
@@ -314,7 +334,7 @@ let SpellEffects = (caster, target, spell_data) =>{
         spell_data.stat_buffs.power = 100 - health_per
         //start a timer for this effect
     } if(spell_data.effects.includes("taunt")) {
-        target.combat.taunt_target = caster.uuid //need to turn this off again somehow
+        target.combat.taunt_target = caster.uuid //need to turn this off again somehow (edit: pretty sure it does in the execute timer)
         //start a timer for this effect
     } if(spell_data.effects.includes("bone_shield")) {
         //start a timer for this effect
@@ -324,10 +344,11 @@ let SpellEffects = (caster, target, spell_data) =>{
         const chance = 1 + Math.floor(Math.random() * 100);
         if(chance <= 30) {
             //success awards bones from target to caster
-
+            caster.bone += target.bone
+            target.bone = 0;
         } else {
             //failure debuffs caster
-
+            
         }
     } if(spell_data.effects.includes("hysteria")) {
         spell_data.tcost = target_distance / spell_data.tcost
@@ -408,6 +429,9 @@ var execute_spell = (req, res, spell_data, caster, target) => {
             return item !== "serenity"
         })
         caster.assault_time = new Date(); //should this be outside of this effects scope?
+    }
+    if(spell_data.effects.includes("taunt")) {
+        target.combat.taunt_target = "" 
     }
 
     // check min max's on ecto and pk
@@ -520,11 +544,10 @@ var processSpell = async(req, res) => {
     //add buffs/debuffs to target stats, pass through target resistances
     targets_buffs(req, res, spell_data, caster, target)
     
-    //execute, save data
     //start cooldown
-    // caster.combat.cooldown[req.body.spell] = spell_data.cooldown;
     cooldown(req, caster, spell_data.cooldown, req.body.spell) 
-
+    
+    //execute, save data
     //start timers
     if(parseFloat(spell_data.ticks) > 0 && parseFloat(spell_data.duration) > 0) {
         setTimeout(execute_spell(req, res, spell_data, caster, target), parseFloat(spell_data.duration) * 1000);
@@ -535,6 +558,7 @@ var processSpell = async(req, res) => {
     res.send("cast complete")
     }
 }
+
 
 // let preSpell = async (caster, target, spell_data) =>{
 

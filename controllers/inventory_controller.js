@@ -167,3 +167,4 @@ exports.displayInventory = async (req, res) => {
     res.render('inventory', {user: user})
 }
 // module.exports = {addInventory, removeInventory}
+

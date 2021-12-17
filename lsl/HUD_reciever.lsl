@@ -27,7 +27,8 @@ cast(key uuid, key target, integer spell){
     CAST_TARGET = target;
     CAST_UUID = uuid;
     CAST_SPELL = spell;
-    llSensor("", "", AGENT, 20, PI);
+    // llSensor("", "", AGENT, 20, PI);
+    llMessageLinked(LINK_THIS, 11, "", "request_agents");
 }
 
 // string LAST_ANIM;
@@ -283,37 +284,31 @@ default{
             ]));
         } else if(n == 6 && id == "agents_in_range") {
             post("/aoe-damage", m);
+        } else if(n == 10 && id == "agents") {
+
+            NEARBY = llGetListLength(llJson2List(m));
+            vector pos = llGetPos();
+            list target_info = llGetObjectDetails(CAST_TARGET, [OBJECT_POS]);
+            vector target_pos = llList2Vector(target_info, 0);
+            string json = llList2Json(JSON_OBJECT, [
+                "uuid", CAST_UUID,
+                "slname", llKey2Name(CAST_UUID),
+                "target", CAST_TARGET,
+                "target_name", llKey2Name(CAST_TARGET),
+                "target_pos", target_pos,
+                "target_distance", llVecDist(pos, target_pos),
+                "spell", CAST_SPELL,
+                "coord", pos,
+                "sim", llGetRegionName(),
+                "version", VERSION,
+                "ap", AP,
+                "nearby", m,
+                "nearby_num", NEARBY
+            ]);
+            llOwnerSay(json);
+            post("/castspell", json);
         }
     }
 
-    sensor( integer num )
-    {
-        NEARBY = num;
-        list nearby;
-        vector pos = llGetPos();
-        while(num--){
-            key av = llDetectedKey(num);
-            float dis = llVecDist( pos, llList2Vector( llGetObjectDetails(av, [OBJECT_POS])  , 0) );
-            nearby += "{uuid:"+(string)av+",distance:"+(string)dis+"}";
-        }
-        list target_info = llGetObjectDetails(CAST_TARGET, [OBJECT_POS]);
-        vector target_pos = llList2Vector(target_info, 0);
-        string json = llList2Json(JSON_OBJECT, [
-            "uuid", CAST_UUID,
-            "slname", llKey2Name(CAST_UUID),
-            "target", CAST_TARGET,
-            "target_name", llKey2Name(CAST_TARGET),
-            "target_pos", target_pos,
-            "target_distance", llVecDist(pos, target_pos),
-            "spell", CAST_SPELL,
-            "coord", pos,
-            "sim", llGetRegionName(),
-            "version", VERSION,
-            "ap", AP,
-            // "nearby", llList2Json(JSON_ARRAY, nearby),
-            "nearby_num", NEARBY
-        ]);
-        post("/castspell", json);
-    }
 
 }
