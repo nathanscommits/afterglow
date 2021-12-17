@@ -282,8 +282,8 @@ default{
                 // "target_name", llKey2Name(TARGET),
                 "uuid", llGetOwner()
             ]));
-        } else if(n == 6 && id == "agents_in_range") {
-            post("/aoe-damage", m);
+        //} else if(n == 6 && id == "agents_in_range") {
+            //post("/aoe-damage", m);
         } else if(n == 10 && id == "agents") {
             llOwnerSay("Agents ready, posting...");
             NEARBY = llGetListLength(llJson2List(m));

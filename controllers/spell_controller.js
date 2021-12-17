@@ -33,9 +33,9 @@ let aoeSpell = async (req, res, spell_data, caster)=> {
     let avatars = req.body.nearby
     avatars.forEach(async (av) => {
         if(av.uuid != req.body.uuid && av.distance <= spell_data.range){
-            console.log(`AOE attacking: ${av}`)
             let target = await USERS.findOne({uuid: av.uuid})
             if(target) {
+                console.log(`AOE attacking: ${JSON.stringify(av)}`)
                 SpellEffects(caster, target, spell_data)
                 targets_buffs(req, res, spell_data, caster, target)
                 if(parseFloat(spell_data.ticks) > 0 && parseFloat(spell_data.duration) > 0) {
@@ -74,6 +74,7 @@ exports.targetUpdate = async (req, res) => {
     console.log(req.body)
     res.status(200).send('updated');
 }
+
 let cooldown = async (req, person, cooldown_time, spell_num) => {
     //run a timeout function ever 1 second and check if cooldown has ended
     let user = await USERS.findOne({uuid: person.uuid})
@@ -416,11 +417,11 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     caster.ap -= spell_data.cost; //do we want to deduct it once per spell or once per tick?
     if(caster.uuid == target.uuid) target.ap = caster.ap;
     target.ap -= spell_data.tcost;
-    if(caster.uuid == target.uuid  && spell_data.scope != "aoe") caster.ap = target.ap;
+    if(caster.uuid == target.uuid) caster.ap = target.ap;
 
     //deduct ecto
     target.ecto -= spell_data.damage
-    if(caster.uuid == target.uuid && spell_data.scope != "aoe") caster.ecto = target.ecto;
+    if(caster.uuid == target.uuid) caster.ecto = target.ecto;
     caster.ecto -= spell_data.cdamage
     if(caster.uuid == target.uuid) target.ecto = caster.ecto;
 
