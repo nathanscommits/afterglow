@@ -11,7 +11,10 @@ socket.on(uuid, (user) => {
     document.getElementById('pk-bar').style.width = `${ user.ap }%`;
 
     //clearTimeout(ap_regen)
-    if(user.ap < user.ap_max && clearTimeout(ap_regen)) ap_regen = setTimeout( addPk(user) , 2000);
+    if(user.ap < user.ap_max){
+        clearTimeout(ap_regen)
+        ap_regen = setTimeout( addPk(user) , 1000);
+    } 
 
     document.getElementById('ecto-bar').style.width = `${user.ecto}%`;
     document.getElementById('bones-balance').innerHTML = `₿$ ${user.bone}`;
