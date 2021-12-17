@@ -16,7 +16,7 @@ exports.post = async (url, data) => {
 exports.pkRegen = async (req, res) => { try {
     //lookup each avatar on sim, if they are below max PK, increase PK by 1
     var io = req.app.get('socketio');
-    req.body.nearby.forEach(av => {
+    req.body.nearby.forEach(async (av) => {
         let target = await USERS.findOne({uuid: av})
         if(!target || target.ap >= target.ap_max) return;
         target.ap++

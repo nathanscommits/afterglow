@@ -32,7 +32,7 @@ exports.aoeSpell = async (req, res, spell_data, caster)=> {
     // let damage = spell_data.damage;
     //loop through every avatar, adding the spell effects
     let avatars = req.body.nearby
-    avatars.forEach(av => {
+    avatars.forEach(async (av) => {
         if(av.uuid == req.body.uuid) return;
         if(av.distance > spell_data.range) return;
         let target = await USERS.findOne({uuid: av.uuid})
