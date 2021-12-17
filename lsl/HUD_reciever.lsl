@@ -77,7 +77,7 @@ string ECTO_MAX;
 string BONE;
 
 PARSE_HTTP(string body) {
-    llOwnerSay(body);
+    // llOwnerSay(body);
     if(llJsonGetValue(body, ["display"]) != JSON_INVALID) {
         STATS = llJsonGetValue(body, ["display"]);
         list stats = llJson2List(STATS);
@@ -267,7 +267,7 @@ default{
     link_message( integer s, integer n, string m, key id )
     {
        if(n == 10 && id == "agents") {
-            llOwnerSay("Agents ready, posting...");
+            // llOwnerSay("Agents ready, posting...");
             NEARBY = llGetListLength(llJson2List(m));
             vector pos = llGetPos();
             list target_info = llGetObjectDetails(CAST_TARGET, [OBJECT_POS]);
@@ -286,7 +286,7 @@ default{
                 "nearby", m,
                 "nearby_num", NEARBY
             ]);
-            llOwnerSay(json);
+            // llOwnerSay(json);
             post("/castspell", json);
         }
     }

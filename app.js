@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('ap_update', (user) => {
         // const update = spellController.apUpdate(user)
-        USERS.updateOne({uuid: user.uuid}, {$set: {ap: parseInt(user.ap)}}, {upsert: true})
+        USERS.updateOne({uuid: user.uuid}, {$set: {ap: user.ap}}, {upsert: true})
         io.emit(user.uuid, user );   
     })
     socket.on('3ffd8a53-ff55-4632-8ebe-54b73b07e1a1', (message) =>     {
