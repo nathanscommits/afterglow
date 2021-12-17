@@ -437,16 +437,19 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     }
 
     // check min max's on ecto and pk
-    let caster_max_ecto = caster.ecto_max * spell_data.ecto_max;
-    let target_max_ecto = target.ecto_max * spell_data.ecto_max;
+    let caster_max_ecto = caster.ecto_max * spell_data.stat_buffs.ecto_max;
+    let target_max_ecto = target.ecto_max * spell_data.stat_buffs.ecto_max;
+    let caster_max_ap = caster.ap_max * spell_data.stat_buffs.ap_max;
+    let target_max_ap = target.ap_max * spell_data.stat_buffs.ap_max;
     if(caster.ap < 0) caster.ap = 0;
-    else if(caster.ap > caster.ap_max) caster.ap = caster.ap_max
+    else if(caster.ap > caster_max_ap) caster.ap = caster_max_ap
     if(caster.ecto < 0) caster.ecto = 0;
     else if(caster.ecto > caster_max_ecto) caster.ecto = caster_max_ecto
     if(target.ap < 0) target.ap = 0;
-    else if(target.ap > target.ap_max) target.ap = target.ap_max
+    else if(target.ap > target_max_ap) target.ap = target_max_ap
     if(target.ecto < 0) target.ecto = 0;
     else if(target.ecto > target_max_ecto) target.ecto = target_max_ecto
+    // console.log(`${target_max_ecto} and ${caster_max_ecto}`)
     //update hud sockets
     update(req, target)
     update(req, caster)

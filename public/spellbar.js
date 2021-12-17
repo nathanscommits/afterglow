@@ -2,6 +2,7 @@ const socket = io('ws://afterglowgame.herokuapp.com/');
 
 const uuid = document.getElementById('uuid-data').dataset.test
 let ap_regen;
+let regenning = false;
 socket.on(uuid, (user) => {
     console.log(user)
     document.getElementById('ecto-bar-span').innerHTML = `ECTO ${user.ecto}/${user.ecto_max}`;
@@ -12,9 +13,12 @@ socket.on(uuid, (user) => {
 
     //clearTimeout(ap_regen)
     if(user.ap < user.ap_max){
-        clearTimeout(ap_regen)
-        ap_regen = setTimeout( addPk(user) , 1000);
-    } 
+        if(!regenning) ap_regen = setInterval( addPk(user) , 1000);
+        regenning = true
+    }  else {
+        clearInterval(ap_regen)
+        regenning = false;
+    }
 
     document.getElementById('ecto-bar').style.width = `${user.ecto}%`;
     document.getElementById('bones-balance').innerHTML = `₿$ ${user.bone}`;
