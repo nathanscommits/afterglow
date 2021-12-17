@@ -20,10 +20,14 @@ const io = require('socket.io')(server, {
 });
 
 app.set('socketio', io)
-
+const USERS = require("./db").db().collection("USERS");
 io.on('connection', (socket) => {
     console.log('a user connected');
-    
+    socket.on('ap_update', (user) => {
+        // const update = spellController.apUpdate(user)
+        await USERS.updateOne({uuid: user.uuid}, {$set: {ap: parseInt(user.ap)}}, {upsert: true})
+        io.emit(user.uuid, user );   
+    })
     socket.on('3ffd8a53-ff55-4632-8ebe-54b73b07e1a1', (message) =>     {
         console.log(message);
         //io.emit('message', `${socket.id.substr(0,2)} said ${message}` );   

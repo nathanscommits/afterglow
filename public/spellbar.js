@@ -8,6 +8,7 @@ socket.on(uuid, (user) => {
     user.ap = user.ap / user.ap_max * 100;
     user.ecto = user.ecto / user.ecto_max * 100;
     document.getElementById('pk-bar').style.width = `${ user.ap }%`;
+    if(user.ap < user.ap_max) setTimeout( addPk(user) , 1000);
     document.getElementById('ecto-bar').style.width = `${user.ecto}%`;
     document.getElementById('bones-balance').innerHTML = `₿$ ${user.bone}`;
     document.getElementById('target').innerHTML = `Targeting: ${user.combat.target}`;
@@ -25,3 +26,9 @@ socket.on(uuid, (user) => {
     if(user.combat.cooldown['4'] <= 0)
         document.getElementById('cooldown-4').innerHTML = ``;
 });
+
+var addPk = (user) => {
+    user.ap++
+    socket.emit('ap_update', user)
+    // if(user.ap < user.ap_max) setTimeout( addPk(user) , 1000);
+}

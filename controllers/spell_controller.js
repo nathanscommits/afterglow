@@ -56,14 +56,15 @@ exports.summonSpell = async (req, res)=> {
     
     //loop through every avatar, adding the spell effects
 }
-exports.apUpdate = async (req, res) => {
-    await USERS.updateOne({uuid: req.body.uuid}, {$set: {ap: parseInt(req.body.ap)}}, {upsert: true})
-    let caster = await USERS.findOne({uuid: req.body.uuid})
-    update(req, caster)
-    console.log(req.body)
-    // res.send({display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max, caster.bone]});
-    res.status(200).send('updated');
-}
+// exports.apUpdate = async ( user) => {
+//     await USERS.updateOne({uuid: user.uuid}, {$set: {ap: parseInt(user.ap)}}, {upsert: true})
+//     let caster = await USERS.findOne({uuid: user.uuid})
+//     return caster;
+//     // update(req, caster)
+//     // console.log(req.body)
+//     // // res.send({display: [caster.ecto, caster.ecto_max, caster.ap, caster.ap_max, caster.bone]});
+//     // res.status(200).send('updated');
+// }
 exports.targetUpdate = async (req, res) => {
     await USERS.updateOne({uuid: req.body.uuid}, {$set: {"combat.target": req.body.target_name}}, {upsert: true})
     let caster = await USERS.findOne({uuid: req.body.uuid})
