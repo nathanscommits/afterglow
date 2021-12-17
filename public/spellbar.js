@@ -1,7 +1,6 @@
 const socket = io('ws://afterglowgame.herokuapp.com/');
 
 const uuid = document.getElementById('uuid-data').dataset.test
-let ap_regen;
 let regenning = false;
 socket.on(uuid, (user) => {
     console.log(user)
@@ -10,11 +9,13 @@ socket.on(uuid, (user) => {
     user.ap = user.ap / user.ap_max * 100;
     user.ecto = user.ecto / user.ecto_max * 100;
     document.getElementById('pk-bar').style.width = `${ user.ap }%`;
-
+    
     //clearTimeout(ap_regen)
+    let ap_regen = setInterval( addPk(user) , 1000)
     if(user.ap < user.ap_max){
         if(!regenning) {
             socket.emit('message', `starting interval!`)
+            clearInterval(ap_regen)
             ap_regen = setInterval( addPk(user) , 1000);
             regenning = true
         }
