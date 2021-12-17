@@ -11,7 +11,7 @@ socket.on(uuid, (user) => {
     document.getElementById('pk-bar').style.width = `${ user.ap }%`;
     
     //clearTimeout(ap_regen)
-    let ap_regen = setInterval( addPk(user) , 1000)
+    let ap_regen;
     if(user.ap < user.ap_max){
         if(!regenning) {
             socket.emit('message', `starting interval!`)
