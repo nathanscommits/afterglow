@@ -32,17 +32,18 @@ let aoeSpell = async (req, res, spell_data, caster)=> {
     //loop through every avatar, adding the spell effects
     let avatars = req.body.nearby
     avatars.forEach(async (av) => {
-        if(av.uuid == req.body.uuid) return;
-        if(av.distance > spell_data.range) return;
-        console.log(av)
-        let target = await USERS.findOne({uuid: av.uuid})
-        if(!target) return;
-        SpellEffects(caster, target, spell_data)
-        targets_buffs(req, res, spell_data, caster, target)
-        if(parseFloat(spell_data.ticks) > 0 && parseFloat(spell_data.duration) > 0) {
-            setTimeout(execute_spell(req, res, spell_data, caster, target), parseFloat(spell_data.duration) * 1000);
-        } else {
-            execute_spell(req, res, spell_data, caster, target)
+        if(av.uuid != req.body.uuid && av.distance <= spell_data.range){
+            console.log(`AOE attacking: ${av}`)
+            let target = await USERS.findOne({uuid: av.uuid})
+            if(target) {
+                SpellEffects(caster, target, spell_data)
+                targets_buffs(req, res, spell_data, caster, target)
+                if(parseFloat(spell_data.ticks) > 0 && parseFloat(spell_data.duration) > 0) {
+                    setTimeout(execute_spell(req, res, spell_data, caster, target), parseFloat(spell_data.duration) * 1000);
+                } else {
+                    execute_spell(req, res, spell_data, caster, target)
+                }
+            }
         }
         // let ecto = target.ecto - damage
         // USERS.updateOne({uuid: av.uuid}, {$set: {ecto: ecto}})
