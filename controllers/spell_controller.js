@@ -34,6 +34,7 @@ let aoeSpell = async (req, res, spell_data, caster)=> {
     avatars.forEach(async (av) => {
         if(av.uuid == req.body.uuid) return;
         if(av.distance > spell_data.range) return;
+        console.log(av)
         let target = await USERS.findOne({uuid: av.uuid})
         SpellEffects(caster, target, spell_data)
         targets_buffs(req, res, spell_data, caster, target)
@@ -522,6 +523,7 @@ var execute_spell = (req, res, spell_data, caster, target) => {
     }
 }
 exports.castSpell = async(req, res) => { try{
+    console.log(req.body)
     //grab data
     let caster = await USERS.findOne({uuid: req.body.uuid})
     
