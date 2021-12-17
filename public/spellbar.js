@@ -13,9 +13,13 @@ socket.on(uuid, (user) => {
 
     //clearTimeout(ap_regen)
     if(user.ap < user.ap_max){
-        if(!regenning) ap_regen = setInterval( addPk(user) , 1000);
-        regenning = true
+        if(!regenning) {
+            socket.emit('message', `starting interval!`)
+            ap_regen = setInterval( addPk(user) , 1000);
+            regenning = true
+        }
     }  else {
+        socket.emit('message', `clearing interval!`)
         clearInterval(ap_regen)
         regenning = false;
     }
@@ -41,6 +45,7 @@ socket.on(uuid, (user) => {
 var addPk = (user) => {
     user.ap++
     // ap_regen = false;
+    socket.emit('message', `Regenning PK for ${user.slname}`)
     socket.emit('ap_update', user)
     // if(user.ap < user.ap_max) setTimeout( addPk(user) , 1000);
 }

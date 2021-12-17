@@ -32,6 +32,10 @@ io.on('connection', (socket) => {
         console.log(message);
         //io.emit('message', `${socket.id.substr(0,2)} said ${message}` );   
     });
+    socket.on('message', (message) =>     {
+        console.log(message);
+        //io.emit('message', `${socket.id.substr(0,2)} said ${message}` );   
+    });
 });
     
 const router = require("./router");
